@@ -107,53 +107,108 @@ outer=80pt
 \maketitle
 Creation date of initial version: January 2, 2023\\
 Publication date of initial version: January 2, 2023\\
-Modification date of current version: January 2, 2023\\
+Modification date of current version: June 22, 2023\\
 
 \section{Abstract}
-Photometric stereo is a method to obtain information about material which describes the 3D shape of it and/or in what way it reflects light. This document is meant as a defensive publication of a product, that scans a material and calculates its 3D shape, as well as how it reflects, transmits or emits light. For example by solving the parameters of a "Spatially Varying Bidirectional Reflectance Distribution Function". The material to be scanned can be anything that reflects, emits or transmits light and can range from hot steel slabs to liquids (other examples are fabrics, leather, plants, rocks, skin, hair, photoluminescent materials and so on). The scanner uses various forms of light which differ in their form and/or spectral distribution, to illuminate the material. This is done, because combining different types of light sources will help elimite any shortcomings, which only using a single type of light would have. \cite{SURVEY}
+Photometric stereo is a technique used to extract three-dimensional (3D) shape information of various materials and examine how these materials interact with light. This document serves as a defensive publication for a product designed to scan materials, analyzing their 3D shape, and their reflection, transmission, or emission of light. A key function of the product is to determine the parameters of a "Spatially Varying Bidirectional Reflectance Distribution Function" (SVBRDF).
+
+The materials for scanning can be anything that manipulates light in some way, including but not limited to hot steel slabs, liquids, fabrics, leather, plants, rocks, skin, hair, and photoluminescent materials. The scanner deploys diverse light forms, each varying in form and/or spectral distribution, to illuminate the material. Utilizing a range of light sources mitigates any limitations that would be present if relying solely on a single light type. \cite{SURVEY}
+
+More information on the current prototype can be found here: \\
+\href{https://nhauber99.github.io/Blog/2023/01/08/MaterialScanner.html}{https://nhauber99.github.io/Blog/2023/01/08/MaterialScanner.html}
+
+A solid introduction to photometric stereo can be found in this reference: \cite{SURVEY}
+
 \section{Description}
-The scanner consists of the following components, many of which are optional:
+The scanner comprises several optional components, including:
 \begin{enumerate}
-	\item One or more cameras which image the transmission of light through or reflection of light off the material. Using multiple cameras has the advantage that more data is available for the software that processes it and a more accurate 3d representation of the object can also be calculated, by using stereophotogrammetry. The normal map calculated via the method of photometric stereo can be used in addition to the 3d model calculated by the previous step, by providing high frequency detail. One possible implementation would be adding a lowpass filtered height map optained by stereophotogreammetry and a highpass filtered height map obtained by integrating the normals obtained by photometric stereo. The cameras can either be fitted with a color filter array (CFA) or can be monochrome (optionally with a filter wheel in front), which would yield better quality images.
-	\item One or more broadband point light sources (like white leds), which reflect off or transmit through the material. These are typically used by photometric stereo, as they are cheap and are easy to model mathematically. However, they are unsuitable for glossy materials with low roughness and hard shadows also cause artefacts, if not compensated for.
-	\item One or more colored/spectrally variable point light sources (like colored leds/lasers or broadband light sources with filters in front of them) which reflect off / transmit through the material. Having colored light emited towards the material and filtering it after the reflection/transmission occured can be used to obtain information about photolumineszence of the material. Colored light may also be produced by controlling the angle of incidence of broadband light (for example by moving the light source or moving mirrors/lenses which reflect/refract it) to a prism (or equivalent objects like a diffraction grating, which bends or reflects the light at an angle dependent on its wavelength) and the resulting "rainbow" of light can then be mostly filtered by an opening letting only part of the light through. The resulting colored light will be rather dark (depending on the size of the opening), but one will have a rather inexpensive device that can adjust its color to any desired wavelength band.
-	\item One or more linear light sources (either broadband/white or colored/spectrally variable) which reflect off the material and a camera takes a monochromatic or multispectral/colored images (with filters in front of it, either a CFA or with a filter wheel), linear light has the advantage, that it greatly improves the quality of a scan of highly glossy materials. \cite{LINEAR_LIGHT}
-	\item Area light sources are also possible with the same reasoning as the linear light sources. One can even replace all point light sources with small area light sources, this would help with materials with very low roughness. However, the accuracy of the calculated normals will still be limited by the amount of light and how much area a single light covers. A better, but maybe difficult to construct option would be to have point light sources behind a medium that scatters their light (like a half sphere of white paper). Each light will therefore be blurred as seen from the position of the material. If these blurred light sources overlap with their neighbors, one can even accurately calculate the normals of mirror like materials. \cite{PS_AreaLights}
-	\item An area light can be used behind the material to illuminate it and get translucency / transparency measurements (separating these can be done by using polarized light, more on this in the next point)
-	\item All of the light sources mentioned above can be used in combination with a (linear/circular) polarizer in front of them and a linear/circular polarizer in front of the camera. These polarizers should either be mechanically rotated or as an alternative liquid crystals can also be used instead, where one can electrically alter the polarization. Using polarizers has the advantage of being able to separate the specular and diffuse reflection of a material (diffuse reflection = 2 * cross polarized image, specular reflection = parallel polarized image - 2 * cross polarized image). The same method can be used to separate translucency and transparency, because any light waves directly going through the material do not change the polarization, while the ones that get scattered (SSS) do change their polarization and are then either partially polarized or unpolarized.	
-	\item 3D scanners like structured light scanners can be used to aquire a 3d geometry of the material, but other methods like stereophotogrammetry when using multiple cameras as mentioned in point 1 can also be used.
-	\item An optical range finder (or a device mentioned in the previous point) can be used to electronically / manually adjust the focus of one or more lenses in front of the cameras.
-	\item If a flat material is scanned, special lenses (like a tilt-shift lens) can be used to have the image plane of a camera which sensor isn't parallel to the material, be parallel to the material.
-	\item The walls of the device should ideally be painted black or made out of a material that reflects as little light as possible, in order to reduce stray light.
-	\item A mobile device may be made by attaching the light sources to the legs of the device (comparable to a tripod, but with more legs), with one camera facing down attached on top (and optionally others on the side). The legs could also be made to be collapsible (again, like a tripod).
-	\item This device may also be attached to a gantry, that can move the device in one to three dimensions (optionally also in more degrees of freedom, in order to rotate the device). This would enable the scanner to scan bigger materials/objects by taking multiple scans of different areas of the material and merging them to get a scan of the whole object. The same can be done by attaching the object to be scanned onto something like this (for example a tiltable rotary table, similar to devices used in 5 axis CNC mills)	
-	\item A device directly illuminted by the light sources can measure the intensity of the light source. This can be used to reduce the effect of any luminance instability the light sources might have. A spectrometer can also be used instead for classifying the spectral distribution of the light sources, in order to compensate any instability regarding this distribution.
-	\item The scanner may be fully battery operated or be attached to an outlet.
-\end{enumerate}\br
+	\item One or more cameras that capture the light's interaction with the material. The use of multiple cameras enhances data availability and allows for a more accurate 3D model of the object through stereophotogrammetry. By integrating high frequency detail provided by the normal map derived from photometric stereo, an enhanced 3D representation of the object can be achieved. The cameras can either be fitted with a color filter array (CFA) or be monochrome, potentially with a filter wheel for superior quality images.
+	
+	\item Broadband point light sources, such as white LEDs, are typically used due to their affordability and ease of mathematical modeling. Despite these benefits, they may not perform well with glossy materials with low roughness, and hard shadows can cause artifacts unless properly managed. This can be mitigated by using them in greater number.
+	
+	\item Colored or spectrally variable point light sources, such as colored LEDs, lasers, or broadband light sources with filters, can provide useful information about the photoluminescence of the material. An inexpensive yet effective method to produce colored light involves controlling the incidence angle of broadband light onto a prism, grating or a similar object, resulting in a "rainbow" of light, from which a specific wavelength band can be selected by an optical slit.
 
-Further clarifications on the process on capturing all images:
-\begin{enumerate}
-	\item The images to be taken are generally a group of cameras taking an image of the reflection of the light emited by a group of light sources (one group can also consist of a single light source), which are either turned on, or modulated to provide a pattern or gradient of the reflected light. The easiest method is having all cameras take an image at once of the relection of a single light. So the maximum total amount of images for a scan of a material (when the material and camera are stationary for one scan) is the amount of cameras multiplied by the amount of light sources (multiplied by the amount of filters, if a filter wheel is used).
-	\item Processing of all this information is ideally done by a computer, either on the CPU or GPU.
-	\item The computer may receive the images from the cameras directly or if the cameras can function on their own, the images can first be saved on the storage in the camera, and later transmitted to the computer
-	\item There are several methods for switching the light sources on and off, on example is to use MOSFETS paired with daisy chained shift registeres controlled by a microcontroller/computer, this has the advantage that the system is easily scalable. Other forms of communication is also possible like I2C from the microcontroller to an led controller which either controls one or multiple leds.
-	\item Multiple colored light sources can be used to acquire a multispectral image. By multiplying the acquired samples per pixel with a matrix (previously calculated), one can get very good color accuracy. See figure \ref{Figure 1}.
-	\item By calculating the normals of the material using the images of the specular reflection, one can compare those to normals calculated from the diffuse reflection of the broadband or colored light sources and estimate subsurface scattering parameters. When having the normals of the specular reflection, solving for the subsurface scattering parameters can also be done directly (like via gradient descent), but may be more computationally expensive. \cite{SSS}
-\end{enumerate}\br
+	\item Linear light sources, either broadband/white or colored/spectrally variable, can significantly improve the quality of scans for highly glossy materials. \cite{LINEAR_LIGHT}
+	
+	\item Area light sources can replace point light sources to aid with materials exhibiting low roughness. A potentially more effective, albeit challenging, alternative could be to use point light sources behind a medium that scatters their light, creating a blurred, overlapped lighting effect conducive to accurate normal calculation for mirror-like materials. \cite{PS_AreaLights}
+	
+	\item An area light source can be placed behind the material to measure translucency or transparency.
+	
+	\item All light sources can be paired with (linear/circular) polarizers to discern the specular and diffuse reflection of a material. Additionally, translucency and transparency can be separated using polarizers, as light waves directly passing through the material maintain polarization while scattered waves alter their polarization.
+	
+	\item Other 3D scanning technologies, such as structured light scanners or stereophotogrammetry (when using multiple cameras), can be used to capture a 3D representation of the material.
+	
+	\item An optical rangefinder can help adjust the focus of the camera lenses electronically or manually.
+	
+	\item Special lenses, like a tilt-shift lens, can be employed for scanning flat materials, allowing the image plane of a camera sensor to be parallel to the material, even if they are not physically aligned.
+	
+	\item To minimize stray light, the device's interior can be coated with a material that absorbs light well, such as black velvet. The scanner can be shielded by a cover or an enclosure to prevent the influence of ambient light. Alternatively, the scanning process can be performed in a dark environment.
+	
+	\item The light sources and cameras can be moved around the material, either physically or by using mirrors or other optical elements. Alternatively, the material itself can be moved while the light sources and cameras stay stationary. For instance, the material can be placed on a rotating platform or conveyor belt.
+	
+	\item A mobile device may be constructed by attaching the light sources to the multiple legs of the device, akin to a multi-legged tripod. A camera would be centrally mounted, facing downwards, and additional side-mounted cameras can be added to provide multiple viewing angles. This design would be both flexible and portable, with collapsible legs for ease of storage and transport.
+	
+	\item An alternative approach would involve attaching the scanner to a gantry. This could provide one to three-dimensional movement and more degrees of freedom for rotation. This capability would be especially useful for scanning larger materials or objects, where multiple scans across different areas are required. These scans can be subsequently merged to generate a comprehensive scan of the entire object. The same could be achieved by mounting the object to be scanned on a device with similar functionality, such as a tiltable rotary table, which is similar to devices used in 5-axis CNC mills.
+	
+	\item To mitigate the effects of any luminance instability from the light sources, a device can be directly illuminated to measure the intensity of the light. This data can then be used to adjust for any light source variations during the scanning process. Alternatively, a spectrometer can be used to classify the spectral distribution of the light sources, which can further help to compensate for any instability in this distribution.
+	
+	\item Depending on the usage scenario and the available infrastructure, the scanner can be powered either by batteries or directly from an outlet. This flexibility allows the scanner to be used in a variety of settings and reduces the dependency on a constant power source.
+\end{enumerate}
+	
+\section{Methodology}
+The proposed scanning process involves several steps:
 
-Additional ideas, which are not the main goal of the project for now, but might also be used:
 \begin{enumerate}
-	\item When reducing the weight of the scanner, it can also be made handheld.
-	\item Aquiring (and separating) multiple reflections of light sources in a single image might be done by using one or more cameras fitted with polarization or color filters in front of them (like a CFA or filter wheel) and having multiple polarized and/or colored light sources in different positions. A beam splitter may be used for this, in order to use multiple cameras taking images of the same perspective (to increase efficiency, the reflection/transmission characteristics of the beam splitter may be dependent on the polarization of the light or the color of the light (e.g. by using thin film filters)
-	\item The same algorithm for processing the acquired data may also be used to convert already digital materials into another format by rendering those materials in a digital version of the scanner. (for example one could calculate the properties of the disney brdf for a material, of which the digital version is in another format).
-	\item Run GAN network on resulting textures for improving perception. (Ideally calculate the perceptual loss on rendered images, which would require gradient backpropagation through the renderer. Either this is directly possible, might work with analytical aproximations or some parts of it might need to consist of trained neural networks to get a good aproximation.)
+	\item Calibration: Calibration is performed to ascertain the camera's intrinsic properties (focal length, principal point, and lens distortion parameters) and extrinsic properties (position and orientation in relation to the material). Furthermore, the position and brightness distribution of the light sources are also calibrated.
+	\item Illumination and Capturing: The material is then illuminated by the light sources, and the cameras capture the resulting interaction between light and material. This process can be repeated with different lighting configurations to provide more comprehensive data about the material.
+	\item Post-Processing: The captured images are processed to extract various material properties. The specific algorithms used will depend on the types of light sources and the properties of the material. The outcome of this step could include a normal map of the material's surface, its SVBRDF parameters, or a 3D model.
+	\item Result Analysis: Finally, the processed data can be analysed or visualised, and used for various applications such as quality control, material design, or computer graphics rendering.
 \end{enumerate}
 
-\section{Discussion}
-This device can be used in many different areas. However, the main goal is to digitize real world materials and calculate the parameters describing said materials in regard to the Disney BRDF. \cite{DISNEY_BRDF}
-Another possible use is in the medical field for scanning skin as well as optically inspecting surfaces in the industry (like steel slabs).
-\section{Acknowledgements}
-Many ideas listed here might have been inspired by research others have published, and not all of those can be found in the references. This is not a publication intended to be published in a scientific journal, but should rather be a more informal publication of the concept of a material scanner. While anyone is free to use any of the listed ideas however they please, there is a good chance that when implementing every idea at once, one or more patents might be infringed. Many patents using the method of photometric stereo already exist and many of those have rather broad claims.
+\section{Capture and Processing Details}
+
+\begin{enumerate}
+	\item The scanning process involves capturing images of the reflection of light emitted by one or more light sources. A group of cameras simultaneously captures these reflections. The light sources can be modulated to produce a pattern or gradient in the reflected light. If there are multiple cameras and multiple light sources, the maximum total number of images taken for a single scan (assuming the material and camera remain stationary) equals the number of cameras times the number of light sources. This total is further multiplied by the number of filters if a filter wheel is employed.
+	
+	\item The images captured are processed by a computer, with the computations executed either on the CPU or GPU for efficient processing. The choice between the two will largely depend on the specific requirements of the computations and the capabilities of the hardware.
+	
+	\item The images may be transmitted to the computer directly from the cameras or, in the case of standalone cameras with onboard storage, the images can be first stored within the camera and then transferred to the computer for further processing.
+	
+	\item Light sources can be toggled on and off using a variety of methods. One such method employs MOSFETs paired with daisy-chained shift registers controlled by a microcontroller or computer. This system has the advantage of scalability. Other forms of communication, like I2C between the microcontroller and an LED controller, are also possible. Yet another alternative is to use one dimmable constant current controller for each LED. This allows for the implementation of multiple dimming methods such as analog, PWM, and shunt FET dimming. The specific dimming method can be dynamically chosen via software.
+	
+	\item Multispectral images can be acquired using multiple colored light sources. High color accuracy can be achieved by multiplying the acquired samples per pixel with a pre-calculated matrix. See figure \ref{Figure 1}.
+	
+	\item Normals of the material can be calculated using the images of the specular reflection. By comparing these normals with those calculated from the diffuse reflection of the broadband or colored light sources, subsurface scattering parameters can be estimated. Once the normals from the specular reflections are obtained, solving for the subsurface scattering parameters directly (like via gradient descent) can be executed, but this may require more computational resources. \cite{SSS}
+\end{enumerate}
+
+The above details shed light on the in-depth process of capturing and processing images for material scanning. The scanner design, coupled with this comprehensive methodology, allows for accurate capture and analysis of a wide range of material properties.
+
+
+\section{Future Scope and Potential Extensions}
+
+While the current focus is on the primary objectives of the project, there are several potential enhancements and additional applications that could be explored in the future:
+
+\begin{enumerate}
+	\item \textbf{Portability:} Minimizing the weight of the scanner could transform it into a handheld device, offering enhanced convenience and portability. This could broaden its usage scenarios, such as field studies or on-site analysis.
+	\item \textbf{Advanced Imaging:} The acquisition and separation of multiple reflections from various light sources in a single image could be achieved by using cameras fitted with polarization or color filters. This could involve employing a filter wheel or Color Filter Array (CFA). Having multiple polarized and/or colored light sources in different positions would enhance this setup. A beam splitter could be utilized for efficiency, allowing multiple cameras to capture images from the same perspective. The characteristics of the beam splitter could be adjusted based on the polarization or color of the light, possibly utilizing thin-film filters.
+	\item \textbf{Digital Material Conversion:} The algorithm used for processing the acquired data could be adapted to convert existing digital materials into other formats. This could be achieved by rendering these materials in a virtualized version of the scanner setup. For instance, the properties of a Disney BRDF for a material could be calculated and converted even if the digital version is in another format.
+	\item \textbf{GAN Network Enhancement:} A Generative Adversarial Network (GAN) could be trained on the resulting textures to improve perception. Ideally, the perceptual loss would be calculated on rendered images, which would require gradient backpropagation through the renderer. This could be achieved directly, through analytical approximations, or via trained neural networks to attain a good approximation.
+	\item \textbf{Simplified Scanner:} A simpler scanner design with fewer light sources and potentially without polarization could be realized. To handle the reduced data, a neural network like a U-Net could be trained to predict the different textures. The network training could ideally be done using the results from a more complex scanner as ground truth. The input during training could be renders of the ground truth or a subset of images captured by the larger scanner.
+	\item \textbf{Data Interpolation for Glossy Materials:} For highly glossy materials, normals and roughness values can be interpolated for pixels that did not contain enough reflected light to calculate the textures accurately. This can be done by setting a minimum specularity (F0) for the material and checking if the measured values align with a high enough roughness value that sufficiently illuminates the pixels. If a lower roughness value is necessary for the measured results, interpolation might be necessary. Once the areas for interpolation are identified, this can be done by examining the nearest patches of normals that did reflect enough light in any image for accurate calculation.
+\end{enumerate}
+
+These potential extensions underline the versatility and scalability of the scanner system, paving the way for future advancements and wider applications in material scanning and imaging.
+
+\section{Applications and Impact}
+The proposed device offers broad applicability spanning across various domains. Its primary function lies in digitizing real-world materials and computing the parameters that describe these materials based on the Disney Bidirectional Reflectance Distribution Function (BRDF).\cite{DISNEY_BRDF} This ability to accurately capture and recreate the physical characteristics of a material digitally opens up new possibilities in fields such as computer graphics, virtual reality, and industrial design.
+
+Moreover, the device's versatility extends beyond material digitization, making it an effective tool in various other fields. In the medical domain, it could potentially be used for skin scanning, providing crucial insights into skin health and abnormalities. For industrial applications, the device could serve as an optical inspection tool for surfaces such as steel slabs, aiding in quality control and defect detection.
+
+\section{Acknowledgements and Legal Considerations}
+The concepts and ideas presented here have been inspired by various research publications and other sources not all of which have been cited explicitly. This document serves as an informal exposition of a material scanner's concept rather than a formal scientific publication.
+
+While the ideas listed here are open for anyone to utilize and adapt, it's crucial to be aware of existing patents that could potentially be infringed upon if all these ideas are implemented collectively. There is a plethora of patents related to the method of photometric stereo, some with very broad claims. Therefore, before implementing these ideas, thorough patent research and legal consultation should be undertaken to ensure compliance with all relevant intellectual property laws.
+
 \newpage
 \section{Tables \& Graphs}
 \begin{figure}[h!]
