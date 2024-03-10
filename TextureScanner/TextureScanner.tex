@@ -126,11 +126,12 @@ The scanner comprises several optional components, including:
 	
 	\item Broadband point light sources, such as white LEDs, are typically used due to their affordability and ease of mathematical modeling. Despite these benefits, they may not perform well with glossy materials with low roughness, and hard shadows can cause artifacts unless properly managed. This can be mitigated by using them in greater number.
 	
-	\item Colored or spectrally variable point light sources, such as colored LEDs, lasers, or broadband light sources with filters, can provide useful information about the photoluminescence of the material. An inexpensive yet effective method to produce colored light involves controlling the incidence angle of broadband light onto a prism, grating or a similar object, resulting in a "rainbow" of light, from which a specific wavelength band can be selected by an optical slit.
+	\item Colored or spectrally variable point light sources, such as colored LEDs, lasers, or broadband light sources with filters, can provide useful information about the photoluminescence of the material. An inexpensive yet effective method to produce colored light involves collimating broadband light and diffract it using a diffraction grating causing different wavelengths to be at different angles from each other. This light can be focused onto a controllable optical slit. By varying the position and opening size of the slit, one can select a specific wavelength band. Ideally this light is then diffused via a normal diffuser or integrating sphere. See figure \ref{variable_light_source} for a drawing.
 
 	\item Linear light sources, either broadband/white or colored/spectrally variable, can significantly improve the quality of scans for highly glossy materials. \cite{LINEAR_LIGHT}
 	
-	\item Area light sources can replace point light sources to aid with materials exhibiting low roughness. A potentially more effective, albeit challenging, alternative could be to use point light sources behind a medium that scatters their light, creating a blurred, overlapped lighting effect conducive to accurate normal calculation for mirror-like materials. \cite{PS_AreaLights}
+	\item Area light sources can replace point light sources to aid with materials exhibiting low roughness. \cite{PS_AreaLights} A potentially more effective, albeit challenging, alternative could be to use point light sources behind a medium that scatters their light. This would result in lights having a falloff and could overlap each other. This means that any point on the hemisphere is covered by at least one light by some degree. If a glossy surface is illuminated by three lights with the same amount then the normal lies between those. This would allow scanning highly specular objects. See figure \ref{blurred_area_lights} for a drawing.
+	 
 	
 	\item An area light source can be placed behind the material to measure translucency or transparency.
 	
@@ -148,9 +149,9 @@ The scanner comprises several optional components, including:
 	
 	\item A mobile device may be constructed by attaching the light sources to the multiple legs of the device, akin to a multi-legged tripod. A camera would be centrally mounted, facing downwards, and additional side-mounted cameras can be added to provide multiple viewing angles. This design would be both flexible and portable, with collapsible legs for ease of storage and transport.
 	
-	\item An alternative approach would involve attaching the scanner to a gantry. This could provide one to three-dimensional movement and more degrees of freedom for rotation. This capability would be especially useful for scanning larger materials or objects, where multiple scans across different areas are required. These scans can be subsequently merged to generate a comprehensive scan of the entire object. The same could be achieved by mounting the object to be scanned on a device with similar functionality, such as a tiltable rotary table, which is similar to devices used in 5-axis CNC mills.
+	\item An alternative approach would involve attaching the scanner to a gantry. This could provide one to three-dimensional movement and more degrees of freedom for rotation. This capability would be especially useful for scanning larger materials or objects, where multiple scans across different areas are required. These scans can be subsequently merged to generate a comprehensive scan of the entire object. The same could be achieved by mounting the object to be scanned on a device with similar functionality, such as a gantry for adjusting the position or a tiltable rotary table for rotation, which is similar to devices used in 5-axis CNC mills.
 	
-	\item To mitigate the effects of any luminance instability from the light sources, a device can be directly illuminated to measure the intensity of the light. This data can then be used to adjust for any light source variations during the scanning process. Alternatively, a spectrometer can be used to classify the spectral distribution of the light sources, which can further help to compensate for any instability in this distribution.
+	\item To mitigate the effects of any luminance instability from the light sources, a device can be directly illuminated to measure the intensity of the light. This data can then be used to adjust for any light source variations during the scanning process. The exposure of the device needs to be synchronized with the camera exposure. Alternatively, a spectrometer can be used to classify the spectral distribution of the light sources, which can further help to compensate for any instability in this distribution. This can also be used to monitor the long term instability of all light sources to find out when any lights should be replaced by new ones.
 	
 	\item Depending on the usage scenario and the available infrastructure, the scanner can be powered either by batteries or directly from an outlet. This flexibility allows the scanner to be used in a variety of settings and reduces the dependency on a constant power source.
 \end{enumerate}
@@ -159,8 +160,8 @@ The scanner comprises several optional components, including:
 The proposed scanning process involves several steps:
 
 \begin{enumerate}
-	\item Calibration: Calibration is performed to ascertain the camera's intrinsic properties (focal length, principal point, and lens distortion parameters) and extrinsic properties (position and orientation in relation to the material). Furthermore, the position and brightness distribution of the light sources are also calibrated.
-	\item Illumination and Capturing: The material is then illuminated by the light sources, and the cameras capture the resulting interaction between light and material. This process can be repeated with different lighting configurations to provide more comprehensive data about the material.
+	\item Calibration: Calibration is performed to ascertain the camera's intrinsic properties (focal length, principal point, vignetting, lens distortion parameters, ...) and extrinsic properties (position and orientation in relation to the material). Furthermore, the position and brightness distribution of the light sources are also calibrated.
+	\item Illumination and Capturing: The material is then illuminated by the light sources, and the cameras capture the resulting interaction between light and material. In a simple setup each image captures the object being illuminated by a single light. Optionally more images per light can be captured with varying cross or parallel polarization or different band pass filters in front of the camera and/or lights. Optionally this process can be repeated at different focus points to allow for focus stacking. All of this can then be repeated for different camera positions and rotations relative to the object to be scanned.
 	\item Post-Processing: The captured images are processed to extract various material properties. The specific algorithms used will depend on the types of light sources and the properties of the material. The outcome of this step could include a normal map of the material's surface, its SVBRDF parameters, or a 3D model.
 	\item Result Analysis: Finally, the processed data can be analysed or visualised, and used for various applications such as quality control, material design, or computer graphics rendering.
 \end{enumerate}
@@ -176,7 +177,7 @@ The proposed scanning process involves several steps:
 	
 	\item Light sources can be toggled on and off using a variety of methods. One such method employs MOSFETs paired with daisy-chained shift registers controlled by a microcontroller or computer. This system has the advantage of scalability. Other forms of communication, like I2C between the microcontroller and an LED controller, are also possible. Yet another alternative is to use one dimmable constant current controller for each LED. This allows for the implementation of multiple dimming methods such as analog, PWM, and shunt FET dimming. The specific dimming method can be dynamically chosen via software.
 	
-	\item Multispectral images can be acquired using multiple colored light sources. High color accuracy can be achieved by multiplying the acquired samples per pixel with a pre-calculated matrix. See figure \ref{Figure 1}.
+	\item Multispectral images can be acquired using multiple colored light sources or different filters. High color accuracy can be achieved by multiplying the acquired samples per pixel with a pre-calculated matrix. See figure \ref{multispectral_to_rgb}.
 	
 	\item Normals of the material can be calculated using the images of the specular reflection. By comparing these normals with those calculated from the diffuse reflection of the broadband or colored light sources, subsurface scattering parameters can be estimated. Once the normals from the specular reflections are obtained, solving for the subsurface scattering parameters directly (like via gradient descent) can be executed, but this may require more computational resources. \cite{SSS}
 \end{enumerate}
@@ -215,9 +216,23 @@ While the ideas listed here are open for anyone to utilize and adapt, it's cruci
 \section{Tables \& Graphs}
 \begin{figure}[h!]
 	\begin{center} 
+		\includegraphics[width=1\linewidth]{variable_light_source.png}
+		\caption{Drawing of a variable wavelength light source} 
+		\label{variable_light_source}
+	\end{center} 
+\end{figure} 
+\begin{figure}[h!]
+	\begin{center} 
+		\includegraphics[width=1\linewidth]{blurred_area_lights.jpg}
+		\caption{Visualization of overlapping blurred area lights. Each light is represented by a colored blurry point in the drawing to make it easier to understand, but should all be considered white lights.} 
+		\label{blurred_area_lights}
+	\end{center} 
+\end{figure} 
+\begin{figure}[h!]
+	\begin{center} 
 		\includegraphics[width=1\linewidth]{chart.eps}
 		\caption{Multispectral to RGB charts (top left: specular distribution of light sources, top right: specular response of camera, bottom: reference XYZ response combined with theoretical spectral response of merged images taken in combination with each led)} 
-		\label{Figure 1}
+		\label{multispectral_to_rgb}
 	\end{center} 
 \end{figure} 
 \newpage
