@@ -1,24 +1,25 @@
+
 \documentclass[11pt, twoside, listof=totocnumbered, bibliography=totocnumbered]{scrartcl}
 
-%math
+% math
 \usepackage{amsmath,amssymb,amstext}
 
-%url
+% url / links
 \usepackage{url}
+\usepackage{hyperref}
 
-%language
-\usepackage{ucs}
-\usepackage[utf8x]{inputenc}
+% language
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman, main=english]{babel}
 \usepackage{blindtext}
 
-%images
+% images
 \usepackage{graphicx}
 
-%header/footer
+% header/footer
 \usepackage[
-bmargin=25mm, 
+bmargin=25mm,
 tmargin=20mm,
 inner=50pt,
 outer=80pt
@@ -26,18 +27,16 @@ outer=80pt
 \usepackage{scrlayer-scrpage}
 \usepackage{lastpage}
 
-%arrows
+% arrows
 \usepackage{textcomp}
 
 \usepackage{multicol}
 
-\usepackage{hyperref}
-
-%code listings
+% code listings
 \usepackage{caption}
-\DeclareCaptionType{code}[Codebeispiel][Codebeispielverzeichnis] 
+\DeclareCaptionType{code}[Codebeispiel][Codebeispielverzeichnis]
 
-%code (C#)
+% code (C#)
 \usepackage{listings}
 \usepackage{xcolor}
 \definecolor{bluekeywords}{rgb}{0,0,1}
@@ -45,12 +44,11 @@ outer=80pt
 \definecolor{redstrings}{rgb}{0.64,0.08,0.08}
 \definecolor{grey}{rgb}{0.5,0.5,0.5}
 \definecolor{types}{rgb}{0.17,0.57,0.68}
-\usepackage{listings}
 \lstset{language=[Sharp]C,
 	captionpos=b,
-	numbers=left, %Nummerierung
+	numbers=left,
 	numberstyle=\color{grey}\scriptsize,
-	frame=lines, % Oberhalb und unterhalb des Listings ist eine Linie
+	frame=lines,
 	showspaces=false,
 	showtabs=false,
 	breaklines=true,
@@ -63,14 +61,11 @@ outer=80pt
 	stringstyle=\color{redstrings},
 	basicstyle=\ttfamily\small,
 }
-%\begin{lstlisting}[caption=a test for a C$^\sharp$ code, label=lst:test]
-%code
-%\end{lstlisting}
 
-%bibliography
+% bibliography
 \bibliographystyle{alpha}
 
-%Description environment
+% Description environment
 \usepackage[strict]{changepage}
 \usepackage{framed}
 \definecolor{formalshade}{rgb}{0.95,0.95,1}
@@ -85,159 +80,526 @@ outer=80pt
 	\MakeFramed {\advance\hsize-\width \FrameRestore}}%
 {\endMakeFramed}
 
-%bsubsection
+% subsection depth
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{4}
 
-%custom commands
+% custom commands
 \newcommand{\br}{\hfill\\}
 \newcommand{\phantomtitle}[1]{\noindent\textbf{\LARGE #1 }\\\br}
 \newcommand{\bt}{{\color{grey}\blindtext}}
 \newcommand{\cfct}[1]{\cite{#1}}
 \newcommand{\imgct}[1]{(source: \cite{#1})}
 \newcommand{\bld}[1]{\textbf{#1}}
+\newcommand{\safeincludegraphics}[2][]{%
+	\IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+		\fbox{\parbox[c][0.28\textheight][c]{0.92\linewidth}{\centering Missing figure file: \texttt{#2}}}}%
+}
 
-%paragraph style
+% paragraph style
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
-\title{Device for digitizing materials}
+\title{Device for Digitizing Materials: Defensive-Publication Embodiments}
 \author{Niklas Hauber}
-\date{\today{}, Linz} 
+\date{\today{}, Traun}
+
 \begin{document}
-\maketitle
-Creation date of initial version: January 2, 2023\\
-Publication date of initial version: January 2, 2023\\
-Modification date of current version: \today{}\\
-
-\section{Abstract}
-Photometric stereo is a technique used to extract three-dimensional (3D) shape information of various materials and examine how these materials interact with light. This document serves as a defensive publication for a product designed to scan materials, analyzing their 3D shape, and their reflection, transmission, or emission of light. A key function of the product is to determine the parameters of a "Spatially Varying Bidirectional Reflectance Distribution Function" (SVBRDF).
-
-The materials for scanning can be anything that manipulates light in some way, including but not limited to hot steel slabs, liquids, fabrics, leather, plants, rocks, skin, hair, and photoluminescent materials. The scanner deploys diverse light forms, each varying in form and/or spectral distribution, to illuminate the material. Utilizing a range of light sources mitigates any limitations that would be present if relying solely on a single light type. \cite{SURVEY}
-
-More information on the current prototype can be found here: \\
-\href{https://www.photometric.io/blog/material-scanner/}{https://www.photometric.io/blog/material-scanner/}
-
-A solid introduction to photometric stereo can be found in this reference: \cite{SURVEY}
-
-\section{Description}
-The scanner comprises several optional components, including:
-\begin{enumerate}
-	\item One or more cameras that capture the light's interaction with the material. The use of multiple cameras enhances data availability and allows for a more accurate 3D model of the object through stereophotogrammetry. By integrating high frequency detail provided by the normal map derived from photometric stereo, an enhanced 3D representation of the object can be achieved. The cameras can either be fitted with a color filter array (CFA) or be monochrome, potentially with a filter wheel for superior quality images.
+	\maketitle
+	Creation date of initial version: January 2, 2023\\
+	Publication date of initial version: January 2, 2023\\
+	Modification date of current version: \today{}\\
+	Expanded defensive-publication version prepared from the original document.\\
 	
-	\item Broadband point light sources, such as white LEDs, are typically used due to their affordability and ease of mathematical modeling. Despite these benefits, they may not perform well with glossy materials with low roughness, and hard shadows can cause artifacts unless properly managed. This can be mitigated by using them in greater number.
+	\section{Abstract}
+	Photometric stereo is a technique used to extract three-dimensional (3D) shape information of various materials and examine how these materials interact with light. This document serves as a defensive publication for a product designed to scan materials, analyzing their 3D shape, and their reflection, transmission, absorption, scattering, polarization, fluorescence, phosphorescence, thermal emission, or other optical and radiometric behavior. A key function of the product is to determine the parameters of a Spatially Varying Bidirectional Reflectance Distribution Function (SVBRDF), Bidirectional Reflectance Distribution Function (BRDF), Bidirectional Transmittance Distribution Function (BTDF), Bidirectional Scattering Distribution Function (BSDF), Bidirectional Surface Scattering Reflectance Distribution Function (BSSRDF), phase function, emission function, or another spatially varying material model suitable for measurement, rendering, simulation, quality control, machine vision, or manufacturing.
 	
-	\item Colored or spectrally variable point light sources, such as colored LEDs, lasers, or broadband light sources with filters, can provide useful information about the photoluminescence of the material. An inexpensive yet effective method to produce colored light involves collimating broadband light and diffract it using a diffraction grating causing different wavelengths to be at different angles from each other. This light can be focused onto a controllable optical slit. By varying the position and opening size of the slit, one can select a specific wavelength band. Ideally this light is then diffused via a normal diffuser or integrating sphere. See figure \ref{variable_light_source} for a drawing.
-
-	\item Linear light sources, either broadband/white or colored/spectrally variable, can significantly improve the quality of scans for highly glossy materials. \cite{LINEAR_LIGHT}
+	The materials for scanning can be anything that manipulates light or radiation in some way, including but not limited to hot steel slabs, liquids, fabrics, leather, plants, rocks, skin, hair, photoluminescent materials, paper, wood, veneers, plastics, resin, glass, ceramics, metals, paints, coatings, semiconductor surfaces, electronic displays, printed materials, composite materials, food, biological samples, cultural heritage objects, automotive materials, fashion materials, packaging materials, transparent films, translucent films, perforated materials, and multilayer materials. The scanner deploys diverse light forms, each varying in form, direction, polarization, modulation, coherence, time profile, and/or spectral distribution, to illuminate the material. Utilizing a range of light sources mitigates limitations that would be present if relying solely on a single light type. \cite{SURVEY}
 	
-	\item Area light sources can replace point light sources to aid with materials exhibiting low roughness. \cite{PS_AreaLights} A potentially more effective, albeit challenging, alternative could be to use point light sources behind a medium that scatters their light. This would result in lights having a falloff and could overlap each other. This means that any point on the hemisphere is covered by at least one light by some degree. If a glossy surface is illuminated by three lights with the same amount then the normal lies between those. This would allow scanning highly specular objects. See figure \ref{blurred_area_lights} for a drawing.
-	 
+	A particularly important embodiment is a scanner that combines front-side reflection capture with a back-side polarized transmission capture. The back-side capture can be performed in multiple spectral bands and multiple analyzer polarization states to separate a polarization-preserving direct-transmission or transparency component from a depolarized scattering or translucency component. These transmission maps can be spatially co-registered with reflection-derived maps, such as albedo, normal, height, roughness, specular, anisotropy, coat, fuzz, sheen, metalness, index-of-refraction, and other BRDF or SVBRDF parameters, and converted into a renderable material definition such as Disney BRDF, OpenPBR Surface, Autodesk Standard Surface, Adobe Standard Material, MaterialX, USD/MaterialX, MDL, glTF, Unreal Engine, Unity, Blender, or another physically based or artist-oriented material representation. \cite{DISNEY_BRDF,OPENPBR,MATERIALX}
 	
-	\item An area light source can be placed behind the material to measure translucency or transparency.
+	More information on the current prototype can be found here:\\
+	\href{https://www.photometric.io/blog/material-scanner/}{https://www.photometric.io/blog/material-scanner/}
 	
-	\item All light sources can be paired with (linear/circular) polarizers to discern the specular and diffuse reflection of a material. Additionally, translucency and transparency can be separated using polarizers, as light waves directly passing through the material maintain polarization while scattered waves alter their polarization.
+	A solid introduction to photometric stereo can be found in this reference: \cite{SURVEY}
 	
-	\item Other 3D scanning technologies, such as structured light scanners or stereophotogrammetry (when using multiple cameras), can be used to capture a 3D representation of the material.
+	\section{Purpose and Interpretation of this Defensive Publication}
+	This document is intended to disclose, in a non-limiting and inclusive manner, many realizations, subcombinations, substitutions, extensions, and combinations of a material-digitization device and associated processing methods. The examples are not intended to require that every listed feature be present in any one implementation. Any feature described in one section may be used alone or combined with any one or more features described in any other section unless the combination is physically impossible.
 	
-	\item An optical rangefinder can help adjust the focus of the camera lenses electronically or manually.
+	Terms such as camera, sensor, image, light source, illumination, material, scan, sample, map, texture, model, BRDF, SVBRDF, OpenPBR, transmission, translucency, transparency, polarization, spectrum, calibration, and machine learning are used broadly. For example, a camera may be monochrome, color, multispectral, hyperspectral, polarization-sensitive, event-based, thermal, depth-capable, time-of-flight, line-scan, area-scan, plenoptic, or a combination thereof. A light source may be a point, line, area, dome, ring, display, projector, laser, LED, OLED, LCD, DLP, scanning beam, sunlight, flash, strobe, tunable source, or any combination of such sources.
 	
-	\item Special lenses, like a tilt-shift lens, can be employed for scanning flat materials, allowing the image plane of a camera sensor to be parallel to the material, even if they are not physically aligned.
+	The disclosure expressly includes combinations of the described system with known and state-of-the-art techniques in material appearance capture, photometric stereo, photogrammetry, structured light, polarimetric imaging, ellipsometry, inverse rendering, differentiable rendering, neural rendering, neural material estimation, Gaussian splatting, NeRF-like radiance fields, diffusion models, transformer models, U-Net-like models, calibration methods, color-management methods, quality-control systems, process-control systems, and industrial inspection systems. \cite{WEYRICH2009,GUARNERA2016,AITTALA2015,DESCHAINTRE2018,GAO2019,HWANG2022,KERBL2023}
 	
-	\item To minimize stray light, the device's interior can be coated with a material that absorbs light well, such as black velvet. The scanner can be shielded by a cover or an enclosure to prevent the influence of ambient light. Alternatively, the scanning process can be performed in a dark environment.
+	The document is also intended to disclose both high-end capture systems with dense measurements and simplified systems that infer missing data using statistics, physics-based priors, learned priors, or calibration data from a more capable reference scanner.
 	
-	\item The light sources and cameras can be moved around the material, either physically or by using mirrors or other optical elements. Alternatively, the material itself can be moved while the light sources and cameras stay stationary. For instance, the material can be placed on a rotating platform or conveyor belt.
+	\section{Description}
+	The scanner comprises several optional components, including:
+	\begin{enumerate}
+		\item One or more cameras that capture the light's interaction with the material. The use of multiple cameras enhances data availability and allows for a more accurate 3D model of the object through stereophotogrammetry. By integrating high-frequency detail provided by the normal map derived from photometric stereo, an enhanced 3D representation of the object can be achieved. The cameras can be fitted with a color filter array (CFA), be monochrome, be paired with a filter wheel, use a Bayer pattern, use a multi-spectral filter mosaic, use a color-polarization filter array, use a division-of-focal-plane polarization sensor, use a beam splitter feeding several sensors, or use a tunable optical filter.
+		
+		\item Broadband point light sources, such as white LEDs, are typically used due to their affordability and ease of mathematical modeling. Despite these benefits, they may not perform well with glossy materials with low roughness, and hard shadows can cause artifacts unless properly managed. This can be mitigated by using them in greater number, by moving them, by diffusing them, by combining them with area lights, or by processing shadowed pixels as missing or low-confidence observations.
+		
+		\item Colored or spectrally variable point light sources, such as colored LEDs, lasers, laser diodes, supercontinuum sources, xenon flash lamps, broadband light sources with filters, diffraction-grating sources, acousto-optic tunable filters, liquid-crystal tunable filters, quantum-dot light sources, phosphor-converted LEDs, or narrow-band interference-filter systems, can provide useful information about color, absorption, photoluminescence, fluorescence, phosphorescence, metamerism, wavelength-dependent scattering, and wavelength-dependent polarization behavior of the material. An inexpensive yet effective method to produce colored light involves collimating broadband light and diffracting it using a diffraction grating, causing different wavelengths to emerge at different angles. This light can be focused onto a controllable optical slit. By varying the position and opening size of the slit, one can select a specific wavelength band. Ideally this light is then diffused via a normal diffuser or integrating sphere. See figure \ref{variable_light_source} for a drawing.
+		
+		\item Linear light sources, either broadband/white or colored/spectrally variable, can significantly improve the quality of scans for highly glossy materials. \cite{LINEAR_LIGHT} Linear sources can be implemented by LED strips, laser lines, cylindrical lenses, fiber optics, scanning slits, linear OLEDs, LCD panels, DLP projections, or by integrating multiple point sources behind a diffuser.
+		
+		\item Area light sources can replace point light sources to aid with materials exhibiting low roughness. \cite{PS_AreaLights} A potentially more effective, albeit challenging, alternative could be to use point light sources behind a medium that scatters their light. This would result in lights having a falloff and could overlap each other. This means that any point on the hemisphere is covered by at least one light by some degree. If a glossy surface is illuminated by three lights with the same amount then the normal lies between those. This would allow scanning highly specular objects. See figure \ref{blurred_area_lights} for a drawing.
+		
+		\item One or more area light sources can be placed behind the material to measure translucency, opacity, transparency, transmission color, transmission roughness, diffuse transmission, direct transmission, haze, scattering, subsurface transport, perforations, porosity, thickness variation, edge leakage, caustic transmission, and spectral absorption.
+		
+		\item All light sources can be paired with linear, circular, elliptical, radial, spatially varying, electrically switchable, mechanically rotatable, or otherwise controllable polarizers to discern specular reflection, diffuse reflection, polarization-preserving reflection, depolarized reflection, direct transmission, and depolarized translucency. Translucency and transparency can be separated using polarizers, because light waves directly passing through the material may maintain polarization while scattered waves alter, randomize, rotate, ellipticize, or otherwise modify their polarization state.
+		
+		\item Other 3D scanning technologies, such as structured light scanners, stereo cameras, stereophotogrammetry, multi-view stereo, depth-from-defocus, focus stacking, shape from polarization, time-of-flight cameras, laser triangulation, lidar, confocal scanning, optical coherence tomography, silhouette scanning, turntable scanning, robot-arm scanning, computed tomography, ultrasound, or combinations thereof, can be used to capture or assist a 3D representation of the material or object.
+		
+		\item An optical rangefinder, autofocus system, depth sensor, phase-detection autofocus sensor, contrast autofocus algorithm, dual-pixel autofocus sensor, focus sweep, or learned focus estimator can help adjust the focus of the camera lenses electronically or manually.
+		
+		\item Special lenses, such as tilt-shift lenses, macro lenses, telecentric lenses, microscope objectives, endoscopic lenses, zoom lenses, anamorphic lenses, liquid lenses, electrically tunable lenses, polarization-preserving lenses, UV lenses, IR lenses, or lens arrays, can be employed for scanning flat, curved, microscopic, large, or difficult-to-access materials.
+		
+		\item To minimize stray light, the device's interior can be coated with a material that absorbs light well, such as black velvet, flocking, Vantablack-like coatings, black anodized metal, baffles, honeycombs, matte paint, beam dumps, or light traps. The scanner can be shielded by a cover or enclosure to prevent the influence of ambient light. Alternatively, the scanning process can be performed in a dark environment, or ambient light can be measured and subtracted using light-off frames or temporally modulated illumination.
+		
+		\item The light sources and cameras can be moved around the material, either physically or by using mirrors, galvanometers, prisms, optical fibers, beam splitters, relay optics, scanning stages, robot arms, drones, or other optical or mechanical elements. Alternatively, the material itself can be moved while the light sources and cameras stay stationary. For instance, the material can be placed on a rotating platform, conveyor belt, XY stage, vacuum table, gantry, robotic end effector, microscope slide stage, transparent platen, stretching frame, tensioning frame, or tiltable rotary table.
+		
+		\item A mobile device may be constructed by attaching the light sources to the multiple legs of the device, akin to a multi-legged tripod. A camera would be centrally mounted, facing downwards, and additional side-mounted cameras can be added to provide multiple viewing angles. This design would be both flexible and portable, with collapsible legs for ease of storage and transport. The mobile device may also use a smartphone, tablet, AR headset, wearable camera, handheld scanner, flashlight attachment, ring light, clip-on polarizer, or foldable light tent.
+		
+		\item An alternative approach would involve attaching the scanner to a gantry. This could provide one to three-dimensional movement and more degrees of freedom for rotation. This capability would be useful for scanning larger materials or objects, where multiple scans across different areas are required. These scans can be subsequently merged to generate a comprehensive scan of the entire object. The same could be achieved by mounting the object to be scanned on a device with similar functionality, such as a gantry for adjusting the position or a tiltable rotary table for rotation, similar to devices used in 5-axis CNC mills.
+		
+		\item To mitigate the effects of luminance instability from light sources, one or more photodiodes, cameras, spectrometers, colorimeters, integrating spheres, reference patches, calibrated reflectance standards, or internal monitor sensors can be directly illuminated to measure intensity and spectral distribution. This data can then be used to adjust for light source variations during the scanning process. The monitor exposure can be synchronized with the camera exposure. A spectrometer can be used to classify the spectral distribution of light sources, compensate for instability, and monitor long-term aging of LEDs, lasers, filters, polarizers, diffusers, displays, and sensors.
+		
+		\item Depending on the usage scenario and available infrastructure, the scanner can be powered by batteries, wall power, power-over-Ethernet, USB, vehicle power, solar power, lab supplies, or a factory automation bus. Power control may include thermal regulation, current regulation, strobe timing, interlocks, safety sensors, and monitoring for repeatability.
+	\end{enumerate}
 	
-	\item A mobile device may be constructed by attaching the light sources to the multiple legs of the device, akin to a multi-legged tripod. A camera would be centrally mounted, facing downwards, and additional side-mounted cameras can be added to provide multiple viewing angles. This design would be both flexible and portable, with collapsible legs for ease of storage and transport.
+	\section{Methodology}
+	The proposed scanning process can involve the following steps, in any suitable order, with any subset repeated, interleaved, skipped, or replaced by an equivalent step:
 	
-	\item An alternative approach would involve attaching the scanner to a gantry. This could provide one to three-dimensional movement and more degrees of freedom for rotation. This capability would be especially useful for scanning larger materials or objects, where multiple scans across different areas are required. These scans can be subsequently merged to generate a comprehensive scan of the entire object. The same could be achieved by mounting the object to be scanned on a device with similar functionality, such as a gantry for adjusting the position or a tiltable rotary table for rotation, which is similar to devices used in 5-axis CNC mills.
+	\begin{enumerate}
+		\item \textbf{Calibration:} Calibration is performed to ascertain the camera's intrinsic properties, such as focal length, principal point, vignetting, distortion parameters, spectral response, black level, read noise, gain, gamma or linearization curve, rolling-shutter timing, sensor non-uniformity, polarization sensitivity, color correction matrix, and focus behavior. Calibration also includes extrinsic properties, such as position and orientation in relation to the material, light sources, robot axes, turntables, screens, backlights, and reference coordinate systems. The position, angular distribution, spatial brightness distribution, spectral distribution, polarization state, temporal profile, thermal behavior, and stability of the light sources are also calibrated.
+		
+		\item \textbf{Sample preparation and positioning:} The material can be placed flat, curved, stretched, relaxed, clamped, vacuum-held, index-matched, immersed, tensioned, heated, cooled, humidified, dried, compressed, or otherwise prepared. Fiducials, calibration dots, QR codes, AprilTags, ArUco markers, corners, pins, printed borders, transparent registration marks, or natural texture features may be used to register scans.
+		
+		\item \textbf{Illumination and capturing:} The material is illuminated by the light sources, and the cameras capture the resulting interaction between light and material. In a simple setup each image captures the object illuminated by a single light. Optionally, more images per light can be captured with varying cross or parallel polarization, varying analyzer angle, varying source polarization, different band-pass filters in front of the camera and/or lights, different wavelengths, different exposure times, different focus distances, different apertures, or different temporal delays. This process can be repeated at different focus points to allow focus stacking, at different camera positions to allow multi-view capture, at different sample poses to improve angular coverage, and at different environmental states to measure variation.
+		
+		\item \textbf{Reflection capture:} A front-side reflection sequence can be captured using point lights, area lights, gradient illumination, display illumination, polarized illumination, structured light, or a combination thereof. The reflection sequence can be used to determine normals, height, diffuse albedo, specular albedo, roughness, anisotropy, clearcoat, sheen, fuzz, metalness, IOR, Fresnel parameters, thin-film interference, iridescence, glitter, flakes, diffraction, retroreflection, or other reflectance parameters.
+		
+		\item \textbf{Transmission capture:} A back-side illumination sequence can be captured using polarized and/or unpolarized broadband, RGB, multispectral, hyperspectral, structured, patterned, collimated, diffuse, directional, telecentric, or time-modulated illumination. The transmitted image can be captured with one or more analyzer polarization states, spectral bands, exposure times, focus distances, or camera positions. This produces maps of direct transparency, opacity, diffuse transmission, depolarized translucency, haze, thickness, absorption, scattering, wavelength-dependent transmission, and polarization-dependent transmission.
+		
+		\item \textbf{Emission and excitation capture:} For emissive, fluorescent, phosphorescent, thermally emitting, luminescent, or photoluminescent materials, the scanner can illuminate the sample with one wavelength or band and capture emission at another wavelength or band, possibly after a delay. The excitation-emission response can be mapped spatially and used for rendering, material classification, authentication, quality control, and defect detection.
+		
+		\item \textbf{Post-processing:} The captured images are processed to extract material properties. The algorithms used depend on light sources, sensors, calibrations, and material properties. The outcome can include a normal map, height map, displacement map, opacity map, transparency map, translucency map, thickness map, spectral albedo, SVBRDF parameters, BSSRDF parameters, BTDF parameters, BSDF parameters, fluorescence maps, defect maps, uncertainty maps, a 3D model, a texture atlas, a neural material representation, or a renderable asset.
+		
+		\item \textbf{Result analysis and validation:} The processed data can be analyzed, visualized, compared against reference materials, rendered under novel lighting, viewed in augmented reality, used in quality control, used for material design, used for computer graphics rendering, used for reverse engineering, used for database search, used for authentication, or used for process control.
+	\end{enumerate}
 	
-	\item To mitigate the effects of any luminance instability from the light sources, a device can be directly illuminated to measure the intensity of the light. This data can then be used to adjust for any light source variations during the scanning process. The exposure of the device needs to be synchronized with the camera exposure. Alternatively, a spectrometer can be used to classify the spectral distribution of the light sources, which can further help to compensate for any instability in this distribution. This can also be used to monitor the long term instability of all light sources to find out when any lights should be replaced by new ones.
+	\section{Capture and Processing Details}
 	
-	\item Depending on the usage scenario and the available infrastructure, the scanner can be powered either by batteries or directly from an outlet. This flexibility allows the scanner to be used in a variety of settings and reduces the dependency on a constant power source.
-\end{enumerate}
+	\begin{enumerate}
+		\item The scanning process involves capturing images of the reflection, transmission, absorption, scattering, or emission of light from one or more light sources. A group of cameras can simultaneously capture these interactions. The light sources can be modulated to produce a pattern, gradient, pulse, code, polarization state, spectrum, spatial light field, structured-light pattern, or temporal signature in the reflected or transmitted light. If there are multiple cameras and multiple light sources, the maximum total number of images taken for a single scan can equal the number of cameras times the number of light states times the number of wavelengths times the number of polarization states times the number of exposures times the number of focus states times the number of sample poses, but a practical system can capture any reduced subset and infer missing observations.
+		
+		\item The images captured are processed by a computer, embedded processor, microcontroller, FPGA, GPU, TPU, NPU, cloud service, edge device, phone, tablet, camera firmware, or distributed network. Computations can be executed on the CPU, GPU, FPGA, neural accelerator, or any combination thereof.
+		
+		\item The images may be transmitted to a computer directly from the cameras, streamed over USB, Ethernet, Camera Link, CoaXPress, Wi-Fi, PCIe, MIPI, or another bus, or stored within the camera and then transferred. Metadata including time, temperature, exposure, current, voltage, polarizer angle, wavelength, stage pose, robot pose, focus, aperture, and calibration version can be stored with each image.
+		
+		\item Light sources can be toggled on and off using MOSFETs paired with daisy-chained shift registers controlled by a microcontroller or computer. Other forms of communication, such as I2C, SPI, CAN, RS-485, Ethernet, DMX, DALI, PWM, analog control, or direct LED-driver control, are possible. One dimmable constant-current controller for each LED allows multiple dimming methods such as analog, PWM, and shunt FET dimming. The dimming method can be dynamically chosen via software, and may be optimized to reduce flicker, heat, rolling-shutter artifacts, or spectral shifts.
+		
+		\item Multispectral images can be acquired using multiple colored light sources or different filters. High color accuracy can be achieved by multiplying acquired samples per pixel with a pre-calculated matrix, a spectral reconstruction basis, a learned color conversion, a regularized inverse, or a perceptually optimized transform. See figure \ref{multispectral_to_rgb}. The same principle can be used for reflection color, transmission color, fluorescence color, metamerism prediction, spectral rendering, textile matching, paint matching, and color quality control.
+		
+		\item Normals of the material can be calculated using images of specular reflection. By comparing these normals with normals calculated from diffuse reflection of broadband or colored light sources, subsurface scattering parameters can be estimated. Once specular normals are obtained, solving for subsurface scattering parameters directly, for example via gradient descent, differentiable rendering, neural inference, or probabilistic inference, can be executed. \cite{SSS}
+		
+		\item Diffuse and specular reflection may be separated using cross and parallel polarization. In one simple idealization, a crossed-polarized capture $C$ measures diffuse or depolarized reflection $D$, and a parallel capture $P$ measures $D + 2S$, where $S$ is a specular component after appropriate scaling and calibration. Other linear systems, Stokes-vector estimates, Mueller-matrix estimates, robust estimates, multi-angle estimates, learned estimates, or physically based polarization BRDF models can be substituted.
+		
+		\item In low-signal, saturated, shadowed, highly specular, highly translucent, anisotropic, iridescent, or otherwise difficult regions, the solver can use confidence weights, robust loss functions, interpolation, inpainting, learned priors, local patch similarity, material-class priors, neighboring wavelengths, neighboring polarization states, neighboring views, or additional captures.
+	\end{enumerate}
 	
-\section{Methodology}
-The proposed scanning process involves several steps:
-
-\begin{enumerate}
-	\item Calibration: Calibration is performed to ascertain the camera's intrinsic properties (focal length, principal point, vignetting, lens distortion parameters, ...) and extrinsic properties (position and orientation in relation to the material). Furthermore, the position and brightness distribution of the light sources are also calibrated.
-	\item Illumination and Capturing: The material is then illuminated by the light sources, and the cameras capture the resulting interaction between light and material. In a simple setup each image captures the object being illuminated by a single light. Optionally more images per light can be captured with varying cross or parallel polarization or different band pass filters in front of the camera and/or lights. Optionally this process can be repeated at different focus points to allow for focus stacking. All of this can then be repeated for different camera positions and rotations relative to the object to be scanned.
-	\item Post-Processing: The captured images are processed to extract various material properties. The specific algorithms used will depend on the types of light sources and the properties of the material. The outcome of this step could include a normal map of the material's surface, its SVBRDF parameters, or a 3D model.
-	\item Result Analysis: Finally, the processed data can be analysed or visualised, and used for various applications such as quality control, material design, or computer graphics rendering.
-\end{enumerate}
-
-\section{Capture and Processing Details}
-
-\begin{enumerate}
-	\item The scanning process involves capturing images of the reflection of light emitted by one or more light sources. A group of cameras simultaneously captures these reflections. The light sources can be modulated to produce a pattern or gradient in the reflected light. If there are multiple cameras and multiple light sources, the maximum total number of images taken for a single scan (assuming the material and camera remain stationary) equals the number of cameras times the number of light sources. This total is further multiplied by the number of filters if a filter wheel is employed.
+	The above details shed light on the in-depth process of capturing and processing images for material scanning. The scanner design, coupled with this comprehensive methodology, allows for accurate capture and analysis of a wide range of material properties.
 	
-	\item The images captured are processed by a computer, with the computations executed either on the CPU or GPU for efficient processing. The choice between the two will largely depend on the specific requirements of the computations and the capabilities of the hardware.
+	\section{Representative Hardware Realizations}
 	
-	\item The images may be transmitted to the computer directly from the cameras or, in the case of standalone cameras with onboard storage, the images can be first stored within the camera and then transferred to the computer for further processing.
+	\subsection{Camera and Sensor Realizations}
+	The imaging system can include any one or more of the following sensors: monochrome cameras, Bayer or other CFA color cameras, multi-spectral mosaic cameras, hyperspectral line-scan or snapshot cameras, polarization cameras with micro-polarizer arrays, rotating-analyzer cameras, beam-splitter based multi-camera assemblies, stereo cameras, multi-view camera arrays, event cameras, time-of-flight sensors, lidar receivers, thermal cameras, short-wave infrared cameras, near-infrared cameras, ultraviolet cameras, X-ray detectors, OCT detectors, plenoptic cameras, microscope cameras, endoscopes, smartphone cameras, DSLR or mirrorless cameras, scientific CCD or CMOS cameras, global shutter cameras, rolling shutter cameras with timing correction, and high-speed cameras.
 	
-	\item Light sources can be toggled on and off using a variety of methods. One such method employs MOSFETs paired with daisy-chained shift registers controlled by a microcontroller or computer. This system has the advantage of scalability. Other forms of communication, like I2C between the microcontroller and an LED controller, are also possible. Yet another alternative is to use one dimmable constant current controller for each LED. This allows for the implementation of multiple dimming methods such as analog, PWM, and shunt FET dimming. The specific dimming method can be dynamically chosen via software.
+	A single sensor can be used sequentially, or multiple sensors can capture simultaneously. Multiple sensors can view from different directions, or can share the same viewpoint through beam splitters, dichroic mirrors, polarization beam splitters, pellicles, prisms, fiber relays, or relay optics. Sensors can have different exposure times, spectral sensitivities, polarization sensitivities, dynamic ranges, fields of view, resolutions, or focus distances. Captures from several sensors can be registered into a common material coordinate system.
 	
-	\item Multispectral images can be acquired using multiple colored light sources or different filters. High color accuracy can be achieved by multiplying the acquired samples per pixel with a pre-calculated matrix. See figure \ref{multispectral_to_rgb}.
+	\subsection{Illumination Realizations}
+	Illumination can be provided by white LEDs, RGB LEDs, narrow-band LEDs, phosphor LEDs, laser diodes, supercontinuum sources, xenon flash lamps, halogen lamps, fluorescent lamps, OLED panels, LCD panels, DLP projectors, micro-LED displays, emissive displays, e-ink-like reflectors illuminated externally, integrating spheres, hemispherical light domes, light tents, ring lights, line lights, fiber bundles, scanning beams, galvo-scanned lasers, acousto-optic or liquid-crystal tunable sources, diffraction-grating sources, monochromators, sunlight, room lights, or combinations thereof.
 	
-	\item Normals of the material can be calculated using the images of the specular reflection. By comparing these normals with those calculated from the diffuse reflection of the broadband or colored light sources, subsurface scattering parameters can be estimated. Once the normals from the specular reflections are obtained, solving for the subsurface scattering parameters directly (like via gradient descent) can be executed, but this may require more computational resources. \cite{SSS}
-\end{enumerate}
-
-The above details shed light on the in-depth process of capturing and processing images for material scanning. The scanner design, coupled with this comprehensive methodology, allows for accurate capture and analysis of a wide range of material properties.
-
-
-\section{Future Scope and Potential Extensions}
-
-While the current focus is on the primary objectives of the project, there are several potential enhancements and additional applications that could be explored in the future:
-
-\begin{enumerate}
-	\item \textbf{Portability:} Minimizing the weight of the scanner could transform it into a handheld device, offering enhanced convenience and portability. This could broaden its usage scenarios, such as field studies or on-site analysis.
-	\item \textbf{Advanced Imaging:} The acquisition and separation of multiple reflections from various light sources in a single image could be achieved by using cameras fitted with polarization or color filters. This could involve employing a filter wheel or Color Filter Array (CFA). Having multiple polarized and/or colored light sources in different positions would enhance this setup. A beam splitter could be utilized for efficiency, allowing multiple cameras to capture images from the same perspective. The characteristics of the beam splitter could be adjusted based on the polarization or color of the light, possibly utilizing thin-film filters.
-	\item \textbf{Digital Material Conversion:} The algorithm used for processing the acquired data could be adapted to convert existing digital materials into other formats. This could be achieved by rendering these materials in a virtualized version of the scanner setup. For instance, the properties of a Disney BRDF for a material could be calculated and converted even if the digital version is in another format.
-	\item \textbf{GAN Network Enhancement:} A Generative Adversarial Network (GAN) could be trained on the resulting textures to improve perception. Ideally, the perceptual loss would be calculated on rendered images, which would require gradient backpropagation through the renderer. This could be achieved directly, through analytical approximations, or via trained neural networks to attain a good approximation.
-	\item \textbf{Simplified Scanner:} A simpler scanner design with fewer light sources and potentially without polarization could be realized. To handle the reduced data, a neural network like a U-Net could be trained to predict the different textures. The network training could ideally be done using the results from a more complex scanner as ground truth. The input during training could be renders of the ground truth or a subset of images captured by the larger scanner. The software could also be used as its own product. This could especially be useful for existing scanners which employ photometric stereo in addition to photogrammetry and normally have fewer light sources.
-	\item \textbf{Data Interpolation for Glossy Materials:} For highly glossy materials, normals and roughness values can be interpolated for pixels that did not contain enough reflected light to calculate the textures accurately. This can be done by setting a minimum specularity (F0) for the material and checking if the measured values align with a high enough roughness value that sufficiently illuminates the pixels. If a lower roughness value is necessary for the measured results, interpolation might be necessary. Once the areas for interpolation are identified, this can be done by examining the nearest patches of normals that did reflect enough light in any image for accurate calculation.
-	\item \textbf{Augmented Reality Visualization:} Captured materials can be compared to the real samples using AR googles (like the Apple Vision Pro) to display a rendered version of the material next to the real one. For this an approximation of the environmental lighting is necessary, which can either be assumed fixed, estimated via machine learning solutions or measured using one or more cameras.
-	\item \textbf{Joint Photogrammetry / Photometric Stereo Capture:} By photographing an object illuminated by multiple light sources from multiple directions, one has the data to do a photogrammetry workflow followed by calculating the material properties via photometric stereo for each camera angle and mapping those results onto the 3d object. Which is how existing approaches handle this. Another approach would be to have a software which first applies the photometric stereo step to get a set of material properties for each pixel and camera position. This would for example result in a normal map, albedo, roughness,... for each camera position. By aggregating all textures to a single multi-channel image, more robust features can be extracted to be used for a photogrammetry workflow. This photogrammetry workflow could be similar to the one used in Meshroom (\href{https://alicevision.org/\#photogrammetry}{https://alicevision.org/\#photogrammetry}) with the main difference that the input to the whole pipeline is a multi channel texture describing all material properties obtained by photometric stereo instead of normal photographs. An additional possible improvement could be to use the previously calculated normal maps (and/or calculated height maps by integrating the normal maps) to aid in the depth map estimation, which could potentially improve the quality of high frequency details in the 3d object. Optionally a post processing step could use all available view and light directions for each pixel to refine the material properties. Each step, namely the initial photometric stero solver, all steps of the photogrammetry pipeline (feature extraction, image matching, features matching, structure from motion, depth maps estimation, meshing and texturing) as well as the last postprocessing step can either be implemented by analytical/heuristical methods or by neural networks trained to fully or partly take care of this step.
-	\item \textbf{Single shot spectral multiplexed and polarization multiplexed photometric stereo:} Using modern dual pixel sensors (like the modern Canon Cameras using DPAF) one can use both spectral multiplexing (\href{https://patents.google.com/patent/US20120056994}{Patent US20120056994A1}) in combination with having two polarization filters with orthogonal polarization on both halves of the lens (similar to the concept used in \href{https://arxiv.org/pdf/2110.05655}{Defocus Map Estimation and Deblurring from a Single Dual-Pixel Image}. By doing this one can have a total of 6 light sources with 3 different spectra for each of the color channels of the camera and 2 different polarizations. This would work best for metallic objects, because they don't have a diffuse reflectance and cross polarization will filter out all reflected light, will parallel polarization will filter none of it, meaning a single image captured like this can be separated into 6 different channels.
-\end{enumerate}
-
-These potential extensions underline the versatility and scalability of the scanner system, paving the way for future advancements and wider applications in material scanning and imaging.
-
-\section{Applications and Impact}
-The proposed device offers broad applicability spanning across various domains. Its primary function lies in digitizing real-world materials and computing the parameters that describe these materials based on the Disney Bidirectional Reflectance Distribution Function (BRDF).\cite{DISNEY_BRDF} This ability to accurately capture and recreate the physical characteristics of a material digitally opens up new possibilities in fields such as computer graphics, virtual reality, and industrial design.
-
-Moreover, the device's versatility extends beyond material digitization, making it an effective tool in various other fields. In the medical domain, it could potentially be used for skin scanning, providing crucial insights into skin health and abnormalities. For industrial applications, the device could serve as an optical inspection tool for surfaces such as steel slabs, aiding in quality control and defect detection.
-
-\section{Acknowledgements and Legal Considerations}
-The concepts and ideas presented here have been inspired by various research publications and other sources not all of which have been cited explicitly. This document serves as an informal exposition of a material scanner's concept rather than a formal scientific publication.
-
-While the ideas listed here are open for anyone to utilize and adapt, it's crucial to be aware of existing patents that could potentially be infringed upon if all these ideas are implemented collectively. There is a plethora of patents related to the method of photometric stereo, some with very broad claims. Therefore, before implementing these ideas, thorough patent research and legal consultation should be undertaken to ensure compliance with all relevant intellectual property laws.
-
-\newpage
-\section{Tables \& Graphs}
-\begin{figure}[h!]
-	\begin{center} 
-		\includegraphics[width=1\linewidth]{variable_light_source.png}
-		\caption{Drawing of a variable wavelength light source} 
-		\label{variable_light_source}
-	\end{center} 
-\end{figure} 
-\begin{figure}[h!]
-	\begin{center} 
-		\includegraphics[width=1\linewidth]{blurred_area_lights.jpg}
-		\caption{Visualization of overlapping blurred area lights. Each light is represented by a colored blurry point in the drawing to make it easier to understand, but should all be considered white lights.} 
-		\label{blurred_area_lights}
-	\end{center} 
-\end{figure} 
-\begin{figure}[h!]
-	\begin{center} 
-		\includegraphics[width=1\linewidth]{chart.eps}
-		\caption{Multispectral to RGB charts (top left: specular distribution of light sources, top right: specular response of camera, bottom: reference XYZ response combined with theoretical spectral response of merged images taken in combination with each led)} 
-		\label{multispectral_to_rgb}
-	\end{center} 
-\end{figure} 
-\newpage
-\bibliography{TextureScanner.bib}
-\vspace*{\fill}
-\textsuperscript{\textcopyright} 2023 Niklas Hauber, All rights reserved.
+	Light sources may be arranged as points, lines, arcs, grids, rings, hemispheres, spheres, domes, cylinders, strips, panels, projectors, backlights, edge lights, waveguides, coaxial illuminators, dark-field illuminators, bright-field illuminators, grazing-angle illuminators, or telecentric illuminators. They may be located in front of the material, behind the material, around the material, inside a transparent support, embedded in a stage, mounted on a robot, mounted on the sample holder, reflected through mirrors, or projected through fibers. The light may be collimated, diffuse, focused, defocused, structured, patterned, polarized, unpolarized, coherent, incoherent, pulsed, continuous, modulated, or coded.
+	
+	\subsection{Polarization Realizations}
+	Polarization elements may include linear polarizers, circular polarizers, quarter-wave plates, half-wave plates, liquid-crystal retarders, photoelastic modulators, polarization beam splitters, wire-grid polarizers, spatially varying polarizers, radial polarizers, electrically switchable polarizers, mechanically rotating polarizers, micro-polarizer arrays, and combinations thereof. Polarization can be controlled at the source, at the camera, at both the source and camera, at intermediate optical paths, or by using a polarization camera.
+	
+	The system may capture two states, such as parallel and crossed; three states, such as 0 degrees, 45 degrees, and 90 degrees; four or more analyzer states; full or partial Stokes vectors; full or partial Mueller matrices; or any reduced representation sufficient for separating specular reflection, diffuse reflection, direct transmission, diffuse transmission, depolarized scattering, birefringence, diattenuation, retardance, stress patterns, fiber orientation, or polarization-based shape cues.
+	
+	\subsection{Spectral and Color Realizations}
+	The spectral domain may include ultraviolet, visible, near-infrared, short-wave infrared, mid-wave infrared, long-wave infrared, or a subset thereof. Spectral acquisition can use multiple LEDs, filter wheels, tunable filters, diffraction gratings, prisms, monochromators, hyperspectral cameras, multi-spectral mosaics, color cameras, spectrometers, or combinations thereof. A material may be measured in a small number of bands for RGB output, in many bands for spectral rendering, or in selected bands chosen for material discrimination or quality control.
+	
+	Spectral data may be converted to CIE XYZ, sRGB, ACEScg, Rec.709, Rec.2020, Display P3, spectral renderer input, paint formulation spaces, textile color spaces, device-independent color profiles, or manufacturing-specific color tolerances. The conversion may be linear, matrix-based, non-linear, regularized, observer-specific, illuminant-specific, metamerism-aware, texture-aware, or learned.
+	
+	\subsection{Mechanical and Environmental Realizations}
+	The scanner can be a tabletop device, flatbed device, conveyor-belt system, gantry system, robot-cell system, handheld system, smartphone accessory, field instrument, microscope attachment, manufacturing-line inspection station, large-object scanning rig, portable tent, dome, capsule, or vehicle-mounted system. The sample can be fixed, moved, rotated, tilted, stretched, tensioned, rolled, unrolled, scanned continuously, moved under line-scan sensors, or scanned tile-by-tile.
+	
+	Environmental conditions such as temperature, humidity, pressure, strain, compression, wetness, drying, chemical exposure, UV exposure, abrasion, heating, cooling, and aging can be controlled or recorded. Such control allows measuring appearance changes, material aging, quality-control drift, thermal emission, hot surfaces, wet surfaces, coatings while curing, paints while drying, textiles while stretched, and objects under operating conditions.
+	
+	\section{Polarized Backlight Capture and Transmission Decomposition}
+	One important family of embodiments uses a polarized backlight and a polarization analyzer at the camera to decompose transmitted light into a direct or polarization-preserving component and a depolarized or scattered component. This may be used for fabrics, paper, leaves, skin, wax, stone, wood veneer, plastics, resins, frosted glass, perforated materials, lace, multilayer films, liquid samples, semi-transparent coatings, and any material that transmits or scatters light.
+	
+	Let $I_{\parallel,\lambda}(x)$ be the observed intensity at image location $x$ for spectral band $\lambda$ when the analyzer is parallel to the source polarization. Let $I_{\perp,\lambda}(x)$ be the observed intensity when the analyzer is crossed. In an idealized two-component model,
+	\begin{align}
+		I_{\parallel,\lambda}(x) &= T_{\mathrm{pol},\lambda}(x) + \frac{1}{2}T_{\mathrm{dep},\lambda}(x) + B_{\parallel,\lambda}(x),\\
+		I_{\perp,\lambda}(x) &= \frac{1}{2}T_{\mathrm{dep},\lambda}(x) + B_{\perp,\lambda}(x),
+	\end{align}
+	where $T_{\mathrm{pol},\lambda}$ is a polarization-preserving or direct transmission term, $T_{\mathrm{dep},\lambda}$ is a depolarized diffuse transmission or translucency term, and $B$ represents black level, stray light, leakage, extinction-ratio error, and other offsets. After calibration, one possible estimate is
+	\begin{align}
+		T_{\mathrm{pol},\lambda}(x) &\approx \max(I_{\parallel,\lambda}(x) - I_{\perp,\lambda}(x), 0),\\
+		T_{\mathrm{dep},\lambda}(x) &\approx 2 I_{\perp,\lambda}(x).
+	\end{align}
+	Equivalently, a calibrated matrix model can be solved per pixel, per material class, per wavelength, or globally to account for non-ideal polarizers, lens polarization, camera polarization response, birefringence, partial polarization, multiple scattering, reflections between sample and supports, and leakage through the optical system.
+	
+	A Stokes-vector implementation can capture three or more analyzer states and compute $S_0$, $S_1$, $S_2$, optionally $S_3$, the angle of polarization, and degree of polarization. One possible decomposition is to treat $S_0 \cdot \mathrm{DoLP}$ as a polarization-preserving component and $S_0 \cdot (1-\mathrm{DoLP})$ as a depolarized component after calibration. A Mueller-matrix implementation can estimate per-pixel or per-region transmission Mueller matrices, enabling maps of depolarization, retardance, diattenuation, birefringence, stress, fiber direction, or anisotropic scattering.
+	
+	The backlight may be uniform, spatially patterned, angularly varying, collimated, diffuse, telecentric, focused, defocused, time-coded, spectrally coded, or polarization-coded. Multiple backlight directions or angular distributions can be used to estimate a BTDF or transmission lobe. A collimated backlight can emphasize direct transmission. A diffuse backlight can emphasize hemispherical transmission. A structured backlight can detect blur, scattering radius, internal diffusion, optical thickness, lensing, caustics, distortions, and local refractive index variation. A coded or patterned backlight can estimate a point-spread function or scattering kernel for each pixel or region.
+	
+	The transmission maps can be co-registered with reflection-derived material maps using a shared camera and sample pose, structured-light geometry, fiducials, feature matching, optical flow, non-rigid registration, texture matching, height maps, normal maps, thin-plate splines, learned registration, or a known calibration between front-side and back-side captures. The final output can include direct-transmission color, opacity, alpha, thickness, absorption color, transmittance, haze, transmission roughness, translucency, subsurface color, scattering distance, transmission scatter, or any shader-channel approximation of such quantities.
+	
+	\section{Reflection, Geometry, and BRDF/SVBRDF Estimation}
+	The front-side reflection capture can be processed using Lambertian photometric stereo, near-field photometric stereo, calibrated photometric stereo, uncalibrated photometric stereo, polarized photometric stereo, area-light photometric stereo, gradient illumination, spherical-gradient illumination, sparse-light capture, two-shot SVBRDF capture, single-image SVBRDF estimation, multi-view inverse rendering, differentiable rendering, or learned inverse rendering. \cite{AITTALA2015,DESCHAINTRE2018,GAO2019,HWANG2022}
+	
+	The reflectance model can be Lambertian, Oren-Nayar, Blinn-Phong, Cook-Torrance, GGX, Beckmann, Ward, Disney BRDF, OpenPBR Surface, Autodesk Standard Surface, Adobe Standard Material, MaterialX Standard Surface, measured BRDF, tabulated BRDF, neural BRDF, anisotropic microfacet model, layered material model, thin-film interference model, flake model, hair or fiber model, cloth model, BSSRDF model, or a custom shader. \cite{DISNEY_BRDF,OPENPBR,MATERIALX}
+	
+	The extracted maps may include one or more of: base color, diffuse color, specular color, specular level, $F_0$, metalness, roughness, anisotropic roughness, anisotropy direction, normal, height, displacement, bump, ambient occlusion, cavity, gloss, clearcoat, clearcoat roughness, sheen, fuzz, velvet, subsurface color, subsurface weight, subsurface radius, transmission color, opacity, alpha, thickness, IOR, absorption, scattering, thin-film thickness, iridescence, diffraction, glitter density, flake normals, fiber direction, weave structure, fiber roughness, hair parameters, coat normal, emission color, emission strength, fluorescence excitation/emission spectra, and uncertainty maps.
+	
+	Geometry can be estimated by structured light, photogrammetry, multi-view stereo, depth sensors, shape from silhouette, shape from polarization, stereo photometric stereo, focus stacking, depth from focus, depth from defocus, normal integration, height-from-normal integration, or combinations thereof. Height and normal maps may be jointly refined so that low-frequency geometry from structured light or photogrammetry is fused with high-frequency detail from photometric stereo. The fusion can be done by Poisson integration, multi-scale optimization, differentiable rendering, variational methods, graph optimization, neural networks, or learned priors.
+	
+	\section{Map Conversion and Renderable Material Output}
+	The scanner can output raw images, calibrated image stacks, intermediate maps, final texture maps, mesh data, point clouds, neural representations, and renderable material assets. Output formats may include EXR, TIFF, PNG, JPEG XL, OpenEXR multi-channel files, MaterialX, USD, USDZ, glTF, MDL, AxF-like files, SBSAR-like procedural materials, Blender node networks, Unreal Engine materials, Unity materials, OpenPBR Surface materials, Disney BRDF parameters, and custom engine formats.
+	
+	For OpenPBR-like outputs, reflection-derived maps can be mapped to base, specular, roughness, metal, coat, fuzz, normal, displacement, and related parameters. Direct-transmission maps can control opacity, alpha, transmission weight, transmission color, thin-walled transmission, or refractive transparency. Depolarized-translucency maps can control subsurface weight, subsurface color, transmission scatter, scattering depth, diffuse transmission, haze, thickness, or artist-facing translucency parameters. For materials where the target renderer lacks separate channels, the maps can be mixed, baked, approximated, packed into auxiliary textures, represented with a custom shader, or exported with metadata describing the intended physical interpretation.
+	
+	The processing may preserve spectral data instead of collapsing to RGB. Spectral output can be used by spectral renderers, color matching, paint formulation, textile QC, metamerism detection, illuminant-dependent rendering, and predictive appearance simulation. When producing RGB maps, color transforms can be calculated for a target illuminant, observer, camera, display, renderer, or artistic color space. The scanner can store the calibration state and spectral basis so that maps can later be converted to different color spaces.
+	
+	\section{Machine Learning, Optimization, and Learned Priors}
+	Machine learning can be used anywhere in the capture, calibration, reconstruction, compression, rendering, or quality-control pipeline. Suitable models include U-Net-like convolutional networks, residual networks, vision transformers, diffusion models, score-based models, autoencoders, variational autoencoders, generative adversarial networks, normalizing flows, graph neural networks, neural fields, NeRF-like radiance fields, 3D Gaussian splatting representations, neural texture fields, implicit material fields, material latent spaces, sparse coding, random forests, gradient-boosted trees, Gaussian processes, Bayesian models, and hybrid physics-informed networks. \cite{DESCHAINTRE2018,GAO2019,KERBL2023,MILDENHALL2020}
+	
+	A high-end scanner with many lights, spectra, polarization states, and views can generate ground truth for a simplified scanner with fewer lights, lower-cost sensors, lower resolution, no polarization, fewer wavelengths, a phone camera, or a single captured image. A neural network can learn to predict missing maps, including normal, height, diffuse, specular, roughness, opacity, direct transmission, depolarized translucency, thickness, scattering, BRDF parameters, uncertainty, or render-error estimates, from a subset of observations.
+	
+	Training data can be captured physically, rendered synthetically, generated procedurally, produced by digital material libraries, generated by diffusion models, created by mixing materials, created through domain randomization, or created by simulating the scanner. Training objectives can include per-map loss, photometric loss, perceptual loss, differentiable-rendering loss, adversarial loss, color-difference loss, BRDF-lobe loss, polarization consistency loss, spectral reconstruction loss, transmission/reflection consistency loss, multi-view consistency loss, temporal consistency loss, uncertainty calibration loss, and quality-control classification loss.
+	
+	Learning can be supervised, self-supervised, weakly supervised, unsupervised, semi-supervised, active, continual, federated, or online. The model can be trained on a population of materials and then fine-tuned for one material class, one factory, one scanner, one camera, one renderer, one target color space, one manufacturer, or one quality-control process. A model can predict confidence or uncertainty and request additional captures adaptively where ambiguity is high.
+	
+	A differentiable renderer can be used to fit maps by comparing rendered predictions against captured images. The renderer can be physically based, approximate, learned, hybrid, polarization-aware, spectral, differentiable, or implemented through analytical derivatives, automatic differentiation, finite differences, or surrogate neural networks. Learned priors can regularize ambiguous inverse problems, fill missing data, denoise captures, super-resolve maps, remove shadows, remove wrinkles, remove dust, identify defects, segment material regions, estimate calibration drift, and predict how a material would look under a new illuminant or in a target renderer.
+	
+	Generative models can be used to synthesize plausible material variants consistent with measured data, produce tileable textures, remove seams, extend small samples, generate material libraries, create procedural controls, compress material maps into latent codes, generate missing backsides or side views, predict aging or wear, and create synthetic training examples. The scanner output can also be used to condition generative models so that synthesized textures remain faithful to a physical sample.
+	
+	\section{Calibration and Self-Calibration}
+	Calibration can be explicit, implicit, learned, self-calibrating, or hybrid. It can be performed at manufacturing time, installation time, before each scan, during each scan, continuously, or on demand. The calibration state can be stored with the capture data and used to reproduce, audit, or reprocess scans.
+	
+	\subsection{Geometric Calibration}
+	Geometric calibration may include camera intrinsics, lens distortion, sensor alignment, focus breathing, rolling-shutter timing, camera extrinsics, light positions, light shapes, stage axes, robot kinematics, turntable axes, sample-plane orientation, backlight position, display geometry, projector intrinsics, projector-camera calibration, telecentric scale, refraction through protective windows, and calibration of transparent supports. Calibration can use checkerboards, Charuco boards, dot patterns, structured light, phase-shifting patterns, bundle adjustment, fiducials on the sample holder, known CAD geometry, self-calibration from natural features, or learned calibration.
+	
+	\subsection{Radiometric and Spectral Calibration}
+	Radiometric calibration may include black-level subtraction, dark frames, flat-field correction, vignetting correction, exposure normalization, sensor linearity, white balance, sensor gain, saturation handling, HDR merging, stray-light estimation, flare correction, lens transmission, light falloff, light spectra, diffuser nonuniformity, backlight uniformity, camera spectral response, display spectra, and reference-target measurements. Spectral calibration can use a spectrometer, colorimeter, monochromator, calibrated LED spectra, spectral reflectance standards, fluorescence standards, or materials with known spectra.
+	
+	\subsection{Polarization Calibration}
+	Polarization calibration may include source polarization angle, analyzer angle, extinction ratio, retardance, circular polarization handedness, lens-induced polarization, sensor polarization response, micro-polarizer orientation, Stokes or Mueller calibration, wavelength-dependent polarization behavior, depolarization by diffusers, reflections from windows, birefringence of transparent supports, and calibration of polarization leakage. Calibration can use known polarizers, wave plates, mirrors, black glass, diffuse white targets, transparent targets, birefringent targets, or self-consistency across rotated sample or polarizer states.
+	
+	\subsection{Temporal, Thermal, and Drift Calibration}
+	The scanner can compensate for LED aging, LED temperature, sensor temperature, dark-current drift, focus drift, mechanical drift, polarizer drift, filter aging, dust accumulation, diffuser yellowing, stage backlash, robot repeatability, power-supply variation, ambient light variation, and humidity effects. It can monitor reference sensors, reference patches, internal standards, calibration captures, or production samples. A warning can be issued when recalibration, cleaning, service, or component replacement is required.
+	
+	\subsection{Cross-Scanner and Cross-Renderer Calibration}
+	Multiple scanners can be calibrated to a shared standard so that their outputs agree. A scanner can be calibrated to a target renderer, game engine, path tracer, display, printing process, visual booth, or human perception experiment. Calibration can optimize rendered appearance rather than raw map accuracy, for example by minimizing appearance differences under a suite of lighting environments and viewing angles.
+	
+	\section{Quality Control, Metrology, and Industrial Use}
+	Although the scanner can be used for computer graphics, it can also be used for quality control, metrology, inspection, grading, sorting, authentication, reverse engineering, and process control. The device can generate pass/fail decisions, defect maps, statistical summaries, uncertainty maps, trend charts, material fingerprints, searchable descriptors, and digital twins.
+	
+	Quality-control outputs may include color difference, gloss difference, haze difference, transparency variation, translucency variation, roughness variation, normal-map variation, weave-angle variation, fiber-orientation variation, surface waviness, dents, scratches, pits, cracks, stains, contamination, coating thickness, orange peel, mottle, banding, registration errors in printing, fabric defects, pinholes, delamination, inclusions, voids, bubbles, warpage, wetness, drying state, curing state, aging, oxidation, heat damage, surface stress, and deviations from a golden sample.
+	
+	The scanner can be integrated into manufacturing lines for textiles, paper, wood, printing, automotive paint, molded plastics, films, coatings, electronics, food, pharmaceuticals, metal slabs, glass, ceramics, and packaging. A conveyor or robot can move samples through the system. The capture sequence can be shortened for production by using multiplexed illumination, line-scan cameras, learned inference, active capture, or a reduced set of diagnostic wavelengths and polarization states. The system can feed results to statistical process control, MES, ERP, PLC, robot-control, sorting, grading, trimming, cutting, or rejection systems.
+	
+	For material design and procurement, measured materials can be compared against specifications, digital libraries, supplier samples, previous production lots, competitor products, or desired visual targets. Search and matching can use raw maps, learned embeddings, rendered appearance under many environments, spectral features, polarization features, transmission features, or application-specific metrics.
+	
+	\section{Combinations with Known and Emerging Techniques}
+	The material scanner can be combined with existing or future approaches in a straightforward manner. The following combinations are expressly included as examples:
+	
+	\begin{enumerate}
+		\item Combining dense photometric stereo with two-shot, single-shot, or flash/no-flash SVBRDF estimation to reduce capture time while retaining high-quality reference data.
+		\item Combining polarized reflection separation with polarized transmission separation to produce both reflection BRDF maps and separate direct-transparency and depolarized-translucency maps.
+		\item Combining structured light with photometric stereo so that low-frequency geometry comes from structured light and high-frequency normals come from photometric stereo.
+		\item Combining photogrammetry with per-view material estimation, then mapping per-view maps to a shared 3D texture atlas.
+		\item Combining a material scanner with NeRF-like or Gaussian-splatting scene capture by assigning measured, inferred, or latent material properties to radiance-field components, splats, meshes, or neural textures.
+		\item Combining hyperspectral imaging with PBR map generation to produce spectral PBR maps, illuminant-dependent RGB maps, or metamerism-aware material assets.
+		\item Combining fluorescence excitation-emission capture with ordinary BRDF capture to create materials that both reflect and emit light under excitation.
+		\item Combining thermal cameras or temperature-controlled stages with appearance capture to measure temperature-dependent appearance, hot materials, curing, drying, or thermal emission.
+		\item Combining OCT, ultrasound, X-ray, CT, or other internal-structure measurements with optical maps to estimate thickness, layers, porosity, fiber structure, internal defects, or scattering parameters.
+		\item Combining learned priors with physically calibrated measurements to infer missing wavelengths, missing polarization states, missing views, high-resolution maps, or more stable material parameters.
+		\item Combining scanner outputs with generative models to synthesize variants, repair maps, tile maps, expand small samples, create procedural controls, or produce material recommendations.
+		\item Combining robot motion planning with active acquisition so that the next light, wavelength, view, polarization, exposure, or sample pose is chosen based on current uncertainty.
+		\item Combining industrial inspection with renderable material generation so the same capture data can be used for both CG asset creation and quality-control inspection.
+		\item Combining color-management workflows with rendering validation so that a rendered digital material visually matches a physical sample in a light booth or AR display.
+		\item Combining stress-induced birefringence or polarization retardance measurements with material capture to detect tension, manufacturing stress, strain, fiber alignment, or anisotropic internal structure.
+		\item Combining material capture with simulation software such as finite-element analysis, optical simulation, textile simulation, fluid simulation, or manufacturing simulation, so that measured appearance maps influence simulation or simulated changes update appearance maps.
+	\end{enumerate}
+	
+	\section{Specific Defensive Disclosure Embodiments}
+	For avoidance of doubt, each numbered embodiment below is independently disclosed, and each may be combined with any one or more other embodiments unless technically incompatible.
+	The following paragraphs are written in a claim-like style to make explicit combinations and subcombinations clear. They are not patent claims and are not intended to limit the broader disclosure.
+	
+	\begin{enumerate}
+		\item A method of generating a renderable material definition of a physical material sample, comprising capturing a reflection image sequence, deriving one or more reflection maps, capturing a polarized backlight transmission image sequence, decomposing the transmission image sequence into a polarization-preserving direct-transmission map and a depolarized-translucency map, spatially registering said maps, and outputting a material definition.
+		
+		\item The method of the preceding embodiment, wherein the transmission sequence is captured in a plurality of spectral bands and produces spectral or RGB direct-transmission and depolarized-translucency maps.
+		
+		\item The method of any preceding embodiment, wherein the analyzer states include parallel and crossed polarization, and the direct-transmission map is estimated at least in part from a difference between parallel and crossed captures.
+		
+		\item The method of any preceding embodiment, wherein three or more analyzer states are captured and Stokes parameters, degree of polarization, or a Mueller-matrix-related quantity is used to estimate direct transmission, diffuse transmission, depolarization, birefringence, retardance, diattenuation, fiber direction, or stress.
+		
+		\item The method of any preceding embodiment, wherein a backlight pattern is projected through the material and the blur, displacement, loss of contrast, polarization change, or spectral change of the pattern is used to estimate haze, scattering radius, optical thickness, direct transmission, diffuse transmission, or local refractive behavior.
+		
+		\item A system comprising front-side controllable illumination, back-side controllable illumination, polarization optics, one or more image sensors, and a processor configured to produce co-registered reflection and transmission maps for a renderable material.
+		
+		\item The system of the preceding embodiment, wherein the front-side illumination includes a plurality of white point lights and the back-side illumination includes a plurality of polarized spectral bands.
+		
+		\item The system of any preceding embodiment, wherein the image sensor is a monochrome camera with a rotating polarizer, a monochrome camera with a filter wheel, a color camera, a polarization camera, a multispectral camera, a hyperspectral camera, or a plurality of cameras viewing through beam splitters.
+		
+		\item A method wherein diffuse and specular reflection are separated by cross-polarized and parallel-polarized captures, and direct transmission and depolarized translucency are separated by analogous polarization-resolved backlight captures.
+		
+		\item A method wherein structured light, photogrammetry, or depth sensing provides a coarse height map and photometric stereo provides a high-frequency normal map, and both are jointly refined into a consistent surface representation.
+		
+		\item A method wherein material maps are fitted using a differentiable renderer and a loss between captured images and rendered images under corresponding light, view, spectrum, and polarization states.
+		
+		\item A method wherein one or more neural networks are trained using a high-end scanner output as ground truth to infer material maps from a simplified scanner, smartphone, single image, reduced light set, reduced wavelength set, or non-polarized capture.
+		
+		\item A method wherein a neural network predicts direct-transmission and depolarized-translucency maps from a subset of backlight polarization or spectral measurements.
+		
+		\item A method wherein a neural network predicts calibration parameters, missing light intensities, spectral distributions, polarizer angles, extinction ratios, image registration, or drift corrections from captured data.
+		
+		\item A method wherein a machine-learning model produces an uncertainty map and the scanner adaptively captures additional lights, views, wavelengths, exposures, focus planes, or polarization states in high-uncertainty areas.
+		
+		\item A method wherein measured material maps are converted to OpenPBR, MaterialX, USD, glTF, Unreal Engine, Unity, Blender, MDL, AxF-like, or custom shader parameters.
+		
+		\item A method wherein the direct-transmission map is mapped to opacity, alpha, transmission weight, transmission color, or transparent transmission, and the depolarized-translucency map is mapped to subsurface, translucency, haze, transmission scatter, or diffuse transmission.
+		
+		\item A method wherein spectral measurements are converted into a target color space using a matrix, regularized spectral reconstruction, color-profile transform, learned transform, or appearance-optimized transform.
+		
+		\item A method wherein the scanner measures fluorescence or phosphorescence by exciting the material in one spectral band and capturing emission in another spectral band, optionally with time delay or polarization analysis.
+		
+		\item A method wherein high dynamic range exposures are merged for specular highlights, dark fibers, transparent regions, emissive regions, or highly absorptive regions.
+		
+		\item A method wherein focus stacking or depth from focus is combined with photometric stereo or structured light to handle thick, hairy, fuzzy, rough, curved, or non-flat samples.
+		
+		\item A method wherein a textile is measured while stretched, tensioned, relaxed, backlit, front-lit, polarized, and spectrally illuminated, yielding maps of weave, fiber direction, surface normals, reflectance, transparency, translucency, and defects.
+		
+		\item A method wherein wood, veneer, or paper is measured using polarized reflection and polarized transmission to estimate grain direction, fiber orientation, color, reflectance, thickness variation, and translucency.
+		
+		\item A method wherein paint, coating, plastic, resin, glass, ceramic, or automotive material is measured for BRDF, flake behavior, gloss, orange peel, haze, translucency, layer thickness, scattering, or defects.
+		
+		\item A method wherein skin, hair, plant, food, biological, or medical materials are measured for reflectance, subsurface scattering, transmission, fluorescence, moisture, color, roughness, and morphological features.
+		
+		\item A quality-control method using maps produced by the scanner to compare a sample to a reference and output pass/fail decisions, defect maps, process-control values, or corrective actions.
+		
+		\item A method of detecting manufacturing drift by repeatedly measuring reference samples or internal standards and comparing measured maps, calibration parameters, spectra, or rendered appearance over time.
+		
+		\item A method wherein a conveyor, robot, gantry, or stage moves samples through the scanner and capture parameters are adjusted based on product type, previous scans, inspection results, or process-control targets.
+		
+		\item A method wherein images from multiple scanners are normalized to a common appearance standard using shared calibration targets, spectral standards, or rendered-appearance matching.
+		
+		\item A method wherein a material sample is scanned tile-by-tile and tiles are stitched using image features, fiducials, normal maps, height maps, optical flow, learned matching, or seam optimization.
+		
+		\item A method wherein a material texture is made tileable, seam-free, compressed, upscaled, denoised, or procedurally parameterized after capture.
+		
+		\item A method wherein a generative model synthesizes additional material variants constrained by measured maps or by renderings of the measured material.
+		
+		\item A method wherein captured maps are embedded in a searchable latent space for material retrieval, similarity search, authentication, procurement, cataloging, or recommendation.
+		
+		\item A method wherein captured maps are used to train or validate a renderer, shader model, BRDF approximation, texture compression method, color transform, or perceptual material metric.
+		
+		\item A method wherein the scanner captures the same material under different temperatures, humidity levels, mechanical strains, wetness levels, aging states, or curing states to model appearance change.
+		
+		\item A method wherein polarization retardance or birefringence measured in transmission is used to infer stress, strain, fiber orientation, anisotropic scattering, or layer structure.
+		
+		\item A method wherein reflection, transmission, and emission measurements are fused with non-optical measurements such as weight, thickness gauges, profilometers, OCT, ultrasound, CT, X-ray, or chemical sensors.
+		
+		\item A method wherein a virtual scanner renders existing digital materials under a simulated version of the capture setup and converts one material representation into another.
+		
+		\item A method wherein a neural inverse-rendering model uses the virtual scanner and/or physical scanner data for training, validation, domain randomization, or synthetic data generation.
+		
+		\item A method wherein captured maps are used for AR or VR visualization by rendering the measured material next to the physical sample under estimated or measured environmental lighting.
+		
+		\item A method wherein a single image is spectrally, spatially, temporally, or polarization multiplexed so that multiple light or polarization states can be demultiplexed from one exposure.
+		
+		\item A method wherein dual-pixel, quad-pixel, multi-aperture, micro-lens, beam-splitter, or color-polarization-mosaic sensors enable single-shot or reduced-shot material capture.
+		
+		\item A method wherein direct and depolarized transmission maps are derived for use in computer graphics even when the physical decomposition is approximate, artist-facing, regularized, or optimized for rendered similarity.
+		
+		\item A method wherein the scanner stores raw capture data and calibration metadata so that improved algorithms can later regenerate maps, fit new shader models, or output new formats.
+		
+		\item A method wherein defects are identified by comparing measured maps with learned or statistical models of acceptable material, including color, normal, roughness, translucency, transmission, polarization, or spectral features.
+		
+		\item A method wherein the output includes uncertainty, confidence, validity masks, saturation masks, shadow masks, specular-hit masks, interpolation masks, or quality metrics for each map.
+		
+		\item A method wherein scanning parameters are optimized for capture time, quality, confidence, energy, thermal limits, motion blur, production-line speed, renderer accuracy, or quality-control sensitivity.
+		
+		\item A method wherein material maps are combined with procedural or simulation parameters, such as weave simulation, yarn direction, flake distribution, scratch model, dirt model, wear model, or anisotropic fiber model.
+		
+		\item A method wherein multiple spectral, polarization, and angular measurements are used to separate layers, coatings, varnish, clearcoat, ink, substrate, fibers, particles, contaminants, or embedded patterns.
+		
+		\item A method wherein a backlight or front light is a display that shows optimized illumination patterns, learned patterns, Hadamard patterns, Gray-code patterns, sinusoidal phase-shift patterns, random patterns, or material-specific patterns.
+		
+		\item A method wherein material maps are generated for non-flat, moving, deforming, rolled, wrinkled, hairy, fuzzy, or volumetric samples using registration, tracking, deformation models, or temporal capture.
+		
+		\item A method wherein the scanner is used as a dataset-generation device for training material-estimation, defect-detection, color-matching, inverse-rendering, neural-rendering, or quality-control models.
+		
+		\item A method wherein a physical sample and a rendered digital material are compared by cameras in a light booth, and material parameters are iteratively adjusted until the rendered image matches the physical sample.
+		
+		\item A method wherein the scanner calculates per-material recommended capture sequences, including which wavelengths, lights, polarizations, and exposures are necessary for a desired output quality.
+		
+		\item A method wherein a renderable material output contains metadata documenting the capture device, calibration version, spectral bands, polarizer states, light geometry, map semantics, units, uncertainty, and intended shader mapping.
+	\end{enumerate}
+	
+	\section{Additional Embodiments and Extensions}
+	While the current focus is on the primary objectives of the project, there are several potential enhancements and additional applications that could be explored in the future:
+	
+	\begin{enumerate}
+		\item \textbf{Portability:} Minimizing the weight of the scanner could transform it into a handheld device, offering enhanced convenience and portability. This could broaden its usage scenarios, such as field studies or on-site analysis. A portable version could be realized as a phone accessory, tablet accessory, clip-on polarized light, foldable light tent, handheld dome, tripod device, or robot-mounted probe.
+		
+		\item \textbf{Advanced Imaging:} The acquisition and separation of multiple reflections from various light sources in a single image could be achieved by using cameras fitted with polarization or color filters. This could involve employing a filter wheel or Color Filter Array (CFA). Having multiple polarized and/or colored light sources in different positions would enhance this setup. A beam splitter could be utilized for efficiency, allowing multiple cameras to capture images from the same perspective. The characteristics of the beam splitter could be adjusted based on the polarization or color of the light, possibly utilizing thin-film filters.
+		
+		\item \textbf{Digital Material Conversion:} The algorithm used for processing the acquired data could be adapted to convert existing digital materials into other formats. This could be achieved by rendering these materials in a virtualized version of the scanner setup. For instance, the properties of a Disney BRDF, OpenPBR, MaterialX, USD, MDL, game-engine material, or proprietary material could be calculated and converted even if the digital version is in another format.
+		
+		\item \textbf{GAN, Diffusion, and Neural Network Enhancement:} A Generative Adversarial Network (GAN), diffusion model, transformer, U-Net, neural field, or other learned model could be trained on the resulting textures to improve perception, recover missing details, denoise maps, super-resolve maps, predict material parameters from fewer images, or generate plausible variants. Ideally, the perceptual loss would be calculated on rendered images, which would require gradient backpropagation through the renderer. This could be achieved directly, through analytical approximations, via differentiable rendering, or via trained neural networks to attain a good approximation.
+		
+		\item \textbf{Simplified Scanner:} A simpler scanner design with fewer light sources and potentially without polarization could be realized. To handle the reduced data, a neural network like a U-Net could be trained to predict different textures. The network training could ideally be done using the results from a more complex scanner as ground truth. The input during training could be renders of the ground truth or a subset of images captured by the larger scanner. The software could also be used as its own product. This could especially be useful for existing scanners that employ photometric stereo in addition to photogrammetry and normally have fewer light sources.
+		
+		\item \textbf{Data Interpolation for Glossy Materials:} For highly glossy materials, normals and roughness values can be interpolated for pixels that did not contain enough reflected light to calculate the textures accurately. This can be done by setting a minimum specularity ($F_0$) for the material and checking if the measured values align with a high enough roughness value that sufficiently illuminates the pixels. If a lower roughness value is necessary for the measured results, interpolation might be necessary. Once the areas for interpolation are identified, this can be done by examining the nearest patches of normals that did reflect enough light in any image for accurate calculation, or by using a learned prior.
+		
+		\item \textbf{Augmented Reality Visualization:} Captured materials can be compared to real samples using AR goggles or mixed-reality displays to display a rendered version of the material next to the real one. For this, an approximation of the environmental lighting is necessary, which can be assumed fixed, estimated via machine learning, measured using one or more cameras, or measured using a light probe. The system can iteratively adjust material maps so the rendered material matches the physical sample as observed by a camera.
+		
+		\item \textbf{Joint Photogrammetry / Photometric Stereo Capture:} By photographing an object illuminated by multiple light sources from multiple directions, one has the data to do a photogrammetry workflow followed by calculating material properties via photometric stereo for each camera angle and mapping those results onto the 3D object. Another approach would be to first apply the photometric stereo step to get a set of material properties for each pixel and camera position. By aggregating all textures to a single multi-channel image, more robust features can be extracted for a photogrammetry workflow. This photogrammetry workflow could be similar to the one used in Meshroom (\href{https://alicevision.org/\#photogrammetry}{https://alicevision.org/\#photogrammetry}), with the main difference that the input to the whole pipeline is a multi-channel texture describing material properties obtained by photometric stereo instead of normal photographs. An additional possible improvement could be to use previously calculated normal maps and/or height maps to aid depth-map estimation, which could improve high-frequency details in the 3D object. Each step can be implemented by analytical methods, heuristics, or neural networks.
+		
+		\item \textbf{Single-Shot Spectral and Polarization-Multiplexed Photometric Stereo:} Using dual-pixel, quad-pixel, multi-aperture, color-polarization mosaic, beam-splitter, or coded-aperture sensors, one can use spectral multiplexing in combination with polarization multiplexing. For example, two polarization filters with orthogonal polarization may be placed over different halves of a lens or over different sensor pixels. Multiple colored light sources with different spectra and polarizations can then be demultiplexed from a single image or a small number of images. This can work especially well for metallic objects, because they do not have a diffuse reflectance in the same way as dielectrics and cross polarization can strongly suppress reflected light while parallel polarization admits it.
+		
+		\item \textbf{Active Acquisition:} The scanner can adaptively choose the next capture based on the current estimate and its uncertainty. It may choose more grazing lights for normal ambiguity, more wavelengths for color ambiguity, more polarization states for separation ambiguity, more backlight exposures for transparent regions, or more views for geometric uncertainty.
+		
+		\item \textbf{Material Libraries and Search:} Captured materials can be stored in a database with metadata, thumbnails, rendered previews, spectra, physical measurements, and learned embeddings. Users can search by image, text, measured sample, color, render appearance, physical property, supplier, or quality-control result.
+		
+		\item \textbf{Process Feedback:} In a production setting, captured maps can be used not only to reject defective parts but to adjust upstream processes, such as light exposure, curing time, coating thickness, pigment mix, printer calibration, weaving tension, drying temperature, polishing, sanding, cutting, or sorting.
+	\end{enumerate}
+	
+	These potential extensions underline the versatility and scalability of the scanner system, paving the way for future advancements and wider applications in material scanning and imaging.
+	
+	\section{Applications and Impact}
+	The proposed device offers broad applicability spanning across various domains. Its primary function lies in digitizing real-world materials and computing the parameters that describe these materials based on the Disney Bidirectional Reflectance Distribution Function (BRDF), OpenPBR, MaterialX, or other physically based material models. \cite{DISNEY_BRDF,OPENPBR,MATERIALX} This ability to accurately capture and recreate the physical characteristics of a material digitally opens up new possibilities in fields such as computer graphics, virtual reality, augmented reality, industrial design, e-commerce, fashion, architecture, digital twins, simulation, manufacturing, and robotics.
+	
+	Moreover, the device's versatility extends beyond material digitization, making it an effective tool in various other fields. In the medical domain, it could potentially be used for skin scanning, hair scanning, tissue appearance analysis, moisture analysis, or detection of abnormalities. For industrial applications, the device could serve as an optical inspection tool for surfaces such as steel slabs, painted panels, fabrics, paper, printed packages, automotive parts, injection-molded plastics, coatings, glass, food products, or electronic assemblies, aiding in quality control and defect detection.
+	
+	\section{Publication Guidance for Defensive Use}
+	For defensive-publication purposes, this document should preferably be published in a manner that is public, dated, durable, discoverable, and citable. Possible publication channels include the author's website, a public GitHub repository and release, a DOI-bearing archive such as Zenodo, an Internet Archive snapshot, a technical disclosure service, a preprint archive where appropriate, or any other publicly accessible repository. Later versions should not silently replace earlier versions; instead, each version should have its own date, file hash if desired, and stable link. The technical disclosure should remain understandable without relying on hidden source files, private images, or private conversations.
+	
+	\section{Acknowledgements and Legal Considerations}
+	The concepts and ideas presented here have been inspired by various research publications and other sources, not all of which have been cited explicitly. This document serves as an informal exposition of a material scanner's concept rather than a formal scientific publication.
+	
+	While the ideas listed here are intended to be openly disclosed for anyone to utilize and adapt, it is crucial to be aware of existing patents that could potentially be infringed upon if all these ideas are implemented collectively. There are many patents related to photometric stereo, material scanning, reflectance acquisition, polarization imaging, color measurement, and quality control, some with very broad claims. Therefore, before implementing these ideas commercially, thorough patent research and legal consultation should be undertaken to ensure compliance with all relevant intellectual property laws. This document is not legal advice.
+	
+	\newpage
+	\section{Tables \& Graphs}
+	\begin{figure}[h!]
+		\begin{center}
+			\safeincludegraphics[width=1\linewidth]{variable_light_source.png}
+			\caption{Drawing of a variable wavelength light source}
+			\label{variable_light_source}
+		\end{center}
+	\end{figure}
+	\begin{figure}[h!]
+		\begin{center}
+			\safeincludegraphics[width=1\linewidth]{blurred_area_lights.jpg}
+			\caption{Visualization of overlapping blurred area lights. Each light is represented by a colored blurry point in the drawing to make it easier to understand, but should all be considered white lights.}
+			\label{blurred_area_lights}
+		\end{center}
+	\end{figure}
+	\begin{figure}[h!]
+		\begin{center}
+			\safeincludegraphics[width=1\linewidth]{chart.eps}
+			\caption{Multispectral to RGB charts (top left: spectral distribution of light sources, top right: spectral response of camera, bottom: reference XYZ response combined with theoretical spectral response of merged images taken in combination with each LED)}
+			\label{multispectral_to_rgb}
+		\end{center}
+	\end{figure}
+	
+	\newpage
+	\begin{thebibliography}{99}
+		
+		\bibitem{SURVEY}
+		Jens Ackermann and Michael Goesele.
+		\newblock A Survey of Photometric Stereo Techniques.
+		\newblock Foundations and Trends in Computer Graphics and Vision, 2015.
+		
+		\bibitem{DISNEY_BRDF}
+		Brent Burley.
+		\newblock Physically-Based Shading at Disney.
+		\newblock Walt Disney Animation Studios, 2012.
+		
+		\bibitem{SSS}
+		Bo Dong, Kathleen D. Moore, Weiyi Zhang, and Pieter Peers.
+		\newblock Scattering Parameters and Surface Normals from Homogeneous Translucent Materials using Photometric Stereo.
+		\newblock IEEE Conference on Computer Vision and Pattern Recognition, 2014.
+		
+		\bibitem{PS_AreaLights}
+		Jiangbin Gan and Thorsten Thormahlen.
+		\newblock Photometric Stereo with Area Lights for Lambertian Surfaces.
+		\newblock ACM SIGGRAPH European Conference on Visual Media Production, 2021.
+		
+		\bibitem{LINEAR_LIGHT}
+		Hiroyuki Ukida, Yoshio Tanimoto, Tetsuya Sano, and Hideki Yamamoto.
+		\newblock 3D Object Reconstruction using Image Scanner with Multiple Light Sources.
+		\newblock IEEE International Conference on Imaging Systems and Techniques, 2010.
+		
+		\bibitem{WEYRICH2009}
+		Tim Weyrich, Jason Lawrence, Hendrik P. A. Lensch, Szymon Rusinkiewicz, and Todd Zickler.
+		\newblock Principles of Appearance Acquisition and Representation.
+		\newblock Foundations and Trends in Computer Graphics and Vision, 2009.
+		
+		\bibitem{GUARNERA2016}
+		Dar'ya Guarnera, Giuseppe Claudio Guarnera, Abhijeet Ghosh, Cornelia Denk, and Mashhuda Glencross.
+		\newblock BRDF Representation and Acquisition.
+		\newblock Computer Graphics Forum, 2016.
+		
+		\bibitem{AITTALA2015}
+		Miika Aittala, Tim Weyrich, and Jaakko Lehtinen.
+		\newblock Two-Shot SVBRDF Capture for Stationary Materials.
+		\newblock ACM Transactions on Graphics, 34(4), Article 110, 2015.
+		
+		\bibitem{DESCHAINTRE2018}
+		Valentin Deschaintre, Miika Aittala, Fredo Durand, George Drettakis, and Adrien Bousseau.
+		\newblock Single-Image SVBRDF Capture with a Rendering-Aware Deep Network.
+		\newblock ACM Transactions on Graphics, 37(4), Article 128, 2018.
+		
+		\bibitem{GAO2019}
+		Duan Gao, Xiao Li, Yue Dong, Pieter Peers, Kun Xu, and Xin Tong.
+		\newblock Deep Inverse Rendering for High-Resolution SVBRDF Estimation from an Arbitrary Number of Images.
+		\newblock ACM Transactions on Graphics, 38(4), Article 134, 2019.
+		
+		\bibitem{HWANG2022}
+		Inseung Hwang, Daniel S. Jeon, Adolfo Munoz, Diego Gutierrez, Xin Tong, and Min H. Kim.
+		\newblock Sparse Ellipsometry: Portable Acquisition of Polarimetric SVBRDF and Shape with Unstructured Flash Photography.
+		\newblock ACM Transactions on Graphics, 41(4), 2022.
+		
+		\bibitem{MILDENHALL2020}
+		Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng.
+		\newblock NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis.
+		\newblock European Conference on Computer Vision, 2020.
+		
+		\bibitem{KERBL2023}
+		Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, and George Drettakis.
+		\newblock 3D Gaussian Splatting for Real-Time Radiance Field Rendering.
+		\newblock ACM Transactions on Graphics, 42(4), 2023.
+		
+		\bibitem{OPENPBR}
+		Academy Software Foundation.
+		\newblock OpenPBR Surface Shading Model Specification.
+		\newblock \url{https://academysoftwarefoundation.github.io/OpenPBR/}
+		
+		\bibitem{MATERIALX}
+		Academy Software Foundation.
+		\newblock MaterialX Specification and Physically Based Shading Nodes.
+		\newblock \url{https://materialx.org/}
+		
+	\end{thebibliography}
+	
+	\vspace*{\fill}
+	\textsuperscript{\textcopyright} 2023-\the\year{} Niklas Hauber. Technical ideas disclosed for defensive-publication purposes. Text copyright remains with the author unless a separate license is published.
 \end{document}
